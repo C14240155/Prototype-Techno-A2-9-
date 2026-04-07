@@ -64,36 +64,48 @@
         .fade-in { animation: fadeIn 0.3s ease-in-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Style untuk pill kategori yang aktif */
         .pill-active {
             background-color: #4A7FA7 !important;
             color: #F6FAFD !important;
             border-color: transparent !important;
         }
+
+        .modal-open { opacity: 1 !important; transform: scale(1) !important; }
+        .toast-show { transform: translateY(0) !important; opacity: 1 !important; }
     </style>
 </head>
 <body class="min-h-screen antialiased overflow-x-hidden">
 
-    <nav class="container mx-auto px-5 py-4 md:px-6 flex justify-between items-center glass-card mt-4 rounded-full max-w-6xl sticky top-4 z-50">
-        <div class="flex items-center gap-2">
-            <img src="logo.png" alt="Pathly Logo" class="h-10 md:h-14 w-auto object-contain transform scale-125 md:scale-150 origin-left">
-            <span class="text-xl md:text-2xl font-bold tracking-wide text-pathly-white ml-2">Pathly</span>
+    <div class="sticky top-4 z-50 container mx-auto max-w-6xl px-4 relative">
+        <nav class="w-full px-5 py-4 md:px-6 flex justify-between items-center glass-card rounded-full shadow-lg">
+            <div class="flex items-center gap-2">
+                <img src="logo.png" alt="Pathly Logo" class="h-10 md:h-14 w-auto object-contain transform scale-125 md:scale-150 origin-left">
+                <span class="text-xl md:text-2xl font-bold tracking-wide text-pathly-white ml-2">Pathly</span>
+            </div>
+            <div class="hidden md:flex gap-8 text-pathly-light items-center">
+                <a href="index.html" class="hover:text-pathly-white transition duration-300">Home</a>
+                <a href="loker.html" class="hover:text-pathly-white transition duration-300 border-b-2 border-pathly-primary pb-1 text-pathly-white">Loker</a>
+                <a href="index.html#mentor" class="hover:text-pathly-white transition duration-300">Mentoring</a>
+                <a href="index.html#campus" class="hover:text-pathly-white transition duration-300">Campus</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="index.html#about" class="hidden sm:block bg-pathly-white text-pathly-dark font-semibold py-2 px-5 md:px-6 rounded-full hover:bg-pathly-light transition duration-300 shadow-[0_0_15px_rgba(246,250,253,0.3)] text-sm md:text-base">
+                    Get Started
+                </a>
+                <button id="mobile-menu-button" class="md:hidden text-pathly-white focus:outline-none p-2 cursor-pointer z-50">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="md:hidden absolute top-[110%] left-4 right-4">
+            <div class="glass-card rounded-2xl p-5 flex flex-col gap-4 text-center shadow-2xl border border-pathly-primary/30">
+                <a href="index.html" class="text-pathly-light hover:text-pathly-white">Home</a>
+                <a href="loker.html" class="text-pathly-white font-semibold">Loker</a>
+                <a href="index.html#mentor" class="text-pathly-light hover:text-pathly-white">Mentoring</a>
+                <a href="index.html#campus" class="text-pathly-light hover:text-pathly-white">Campus</a>
+            </div>
         </div>
-        <div class="hidden md:flex gap-8 text-pathly-light items-center">
-            <a href="index.html" class="hover:text-pathly-white transition duration-300">Home</a>
-            <a href="loker.html" class="hover:text-pathly-white transition duration-300 border-b-2 border-pathly-primary pb-1 text-pathly-white">Loker</a>
-            <a href="#mentor" class="hover:text-pathly-white transition duration-300">Mentoring</a>
-            <a href="#campus" class="hover:text-pathly-white transition duration-300">Campus</a>
-        </div>
-        <div class="flex items-center gap-4">
-            <a href="#about" class="hidden sm:block bg-pathly-white text-pathly-dark font-semibold py-2 px-5 md:px-6 rounded-full hover:bg-pathly-light transition duration-300 shadow-[0_0_15px_rgba(246,250,253,0.3)] text-sm md:text-base">
-                Get Started
-            </a>
-            <button id="mobile-menu-button" class="md:hidden text-pathly-white focus:outline-none p-2">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-            </button>
-        </div>
-    </nav>
+    </div>
 
     <header class="container mx-auto px-4 mt-10 max-w-6xl">
         <h1 class="text-3xl md:text-4xl font-bold text-pathly-white mb-6">Eksplorasi Peluang Karir</h1>
@@ -118,6 +130,10 @@
         </div>
 
         <div id="category-pills" class="flex gap-3 overflow-x-auto custom-scrollbar pb-2 mb-8">
+            <button onclick="toggleInterestMode()" id="btn-show-interest" class="glass-card text-yellow-400 border-yellow-500/50 hover:bg-yellow-500/10 px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap shrink-0 transition-colors flex items-center gap-2">
+                ⭐ Minat Saya (<span id="interest-count">0</span>)
+            </button>
+            <div class="w-px h-6 bg-pathly-card self-center mx-1 shrink-0"></div>
             <button onclick="setCategory('')" class="cat-pill pill-active glass-card text-pathly-light hover:text-pathly-white px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap shrink-0 transition-colors">Semua Pekerjaan</button>
             <button onclick="setCategory('Web Development')" class="cat-pill glass-card text-pathly-light hover:text-pathly-white px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap shrink-0 transition-colors">Web Development</button>
             <button onclick="setCategory('UI/UX Design')" class="cat-pill glass-card text-pathly-light hover:text-pathly-white px-5 py-2 rounded-full text-sm font-medium whitespace-nowrap shrink-0 transition-colors">UI/UX Design</button>
@@ -126,31 +142,32 @@
     </header>
 
     <main class="container mx-auto px-4 max-w-6xl flex flex-col lg:flex-row gap-6 mb-20 relative">
-        
         <div id="job-list-container" class="w-full lg:w-5/12 flex flex-col gap-4 lg:h-[800px] overflow-y-auto custom-scrollbar pr-2">
             </div>
 
         <div id="detail-section" class="hidden fixed inset-0 z-[60] bg-pathly-dark/95 backdrop-blur-md pt-20 px-4 pb-10 overflow-y-auto lg:static lg:block lg:w-7/12 lg:bg-transparent lg:p-0 lg:z-auto lg:sticky lg:top-28 lg:h-[calc(100vh-8rem)]">
-            
             <button onclick="closeMobileDetail()" class="lg:hidden mb-4 flex items-center gap-2 text-pathly-light hover:text-pathly-white transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg> Kembali ke Daftar Loker
             </button>
 
             <div id="empty-state" class="glass-card h-full rounded-3xl p-8 flex flex-col items-center justify-center text-center hidden">
                 <svg class="w-20 h-20 text-pathly-card mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                <h3 class="text-xl font-bold text-pathly-white mb-2">Ops, Pekerjaan Tidak Ditemukan</h3>
-                <p class="text-pathly-light text-sm">Coba ubah kata kunci atau hapus filter lokasi/tipe pekerjaan.</p>
+                <h3 class="text-xl font-bold text-pathly-white mb-2">Belum ada lowongan</h3>
+                <p class="text-pathly-light text-sm">Coba ubah kata kunci atau tambahkan pekerjaan ke daftar minatmu.</p>
             </div>
 
             <div id="detail-content-area" class="glass-card h-full rounded-3xl p-6 lg:p-8 lg:overflow-y-auto custom-scrollbar relative">
-                <div class="lg:absolute top-8 right-8 flex gap-3 mb-6 lg:mb-0">
-                    <button class="bg-pathly-primary text-pathly-white font-bold py-2.5 px-6 rounded-xl hover:bg-opacity-80 transition shadow-lg w-full lg:w-auto">Lamar Sekarang</button>
-                    <button class="glass-card p-2.5 rounded-xl text-pathly-light hover:text-pathly-white transition shrink-0">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>
+                <div class="lg:absolute top-8 right-8 flex flex-col sm:flex-row gap-3 mb-6 lg:mb-0">
+                    <button onclick="openApplyModal()" class="bg-pathly-primary text-pathly-white font-bold py-2.5 px-6 rounded-xl hover:bg-opacity-80 transition shadow-lg w-full sm:w-auto flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                        Lamar Sekarang
+                    </button>
+                    <button id="btn-toggle-interest" onclick="toggleCurrentInterest()" class="glass-card text-pathly-light hover:text-yellow-400 hover:border-yellow-400/50 transition font-medium py-2.5 px-5 rounded-xl flex items-center justify-center gap-2 w-full sm:w-auto">
+                        <span id="interest-icon">⭐</span> <span id="interest-text">Taruh Minat</span>
                     </button>
                 </div>
 
-                <div class="flex items-center gap-5 mb-8 border-b border-pathly-card pb-6 mt-4 lg:mt-12">
+                <div class="flex items-center gap-5 mb-8 border-b border-pathly-card pb-6 mt-4 lg:mt-16">
                     <div class="w-20 h-20 bg-white rounded-2xl p-3 flex items-center justify-center shrink-0 shadow-lg">
                         <img id="detail-logo-img" src="" class="w-full h-full object-contain">
                         <div id="detail-logo-text" class="hidden font-bold text-3xl"></div>
@@ -172,10 +189,9 @@
                                 <svg class="w-5 h-5 text-pathly-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg> Deskripsi Pekerjaan
                             </h4>
                             <ul id="detail-desc" class="list-disc list-inside text-pathly-light text-sm space-y-2 leading-relaxed pl-2">
-                                <li>Silakan pilih salah satu pekerjaan di daftar untuk melihat detail.</li>
+                                <li>Silakan pilih pekerjaan.</li>
                             </ul>
                         </div>
-                        
                         <div>
                             <h4 class="text-lg font-bold text-pathly-white mb-3 flex items-center gap-2">
                                 <svg class="w-5 h-5 text-pathly-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg> Kualifikasi
@@ -201,176 +217,202 @@
         </div>
     </main>
 
+    <div id="apply-modal" class="hidden fixed inset-0 z-[70] bg-pathly-dark/80 backdrop-blur-sm flex items-center justify-center px-4 overflow-y-auto py-10">
+        <div class="glass-card w-full max-w-2xl rounded-3xl p-6 md:p-8 relative transform scale-95 opacity-0 transition-all duration-300 shadow-2xl my-auto" id="apply-modal-content">
+            
+            <button onclick="closeApplyModal()" class="absolute top-5 right-5 text-pathly-light hover:text-white bg-pathly-dark/50 p-2 rounded-full transition z-10">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <h3 class="text-2xl font-bold text-pathly-white mb-2 flex items-center gap-2">🚀 Formulir Lamaran</h3>
+            <p class="text-sm text-pathly-light mb-6 border-b border-pathly-card pb-4">Lengkapi berkas di bawah ini untuk melamar posisi <strong id="modal-job-title" class="text-pathly-primary">Pekerjaan</strong> di <strong id="modal-job-company">Perusahaan</strong>.</p>
+            
+            <form onsubmit="submitApplication(event)" class="space-y-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-pathly-white mb-1.5">Nama Lengkap <span class="text-red-400">*</span></label>
+                        <input type="text" required placeholder="Contoh: Budi Santoso" class="glass-input w-full py-2.5 px-4 rounded-xl text-sm transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-pathly-white mb-1.5">Email <span class="text-red-400">*</span></label>
+                        <input type="email" required placeholder="budi@example.com" class="glass-input w-full py-2.5 px-4 rounded-xl text-sm transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-pathly-white mb-1.5">No. WhatsApp <span class="text-red-400">*</span></label>
+                        <input type="tel" required placeholder="08123456789" class="glass-input w-full py-2.5 px-4 rounded-xl text-sm transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-pathly-white mb-1.5">Domisili / Lokasi <span class="text-red-400">*</span></label>
+                        <input type="text" required placeholder="Contoh: Surabaya" class="glass-input w-full py-2.5 px-4 rounded-xl text-sm transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-pathly-white mb-1.5">Universitas Terakhir <span class="text-red-400">*</span></label>
+                        <input type="text" required placeholder="Contoh: Universitas Gadjah Mada" class="glass-input w-full py-2.5 px-4 rounded-xl text-sm transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-pathly-white mb-1.5">Jurusan <span class="text-red-400">*</span></label>
+                        <input type="text" required placeholder="Contoh: Sistem Informasi" class="glass-input w-full py-2.5 px-4 rounded-xl text-sm transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-pathly-white mb-1.5">Tingkat Pengalaman <span class="text-red-400">*</span></label>
+                        <select required class="glass-input w-full py-2.5 px-4 rounded-xl text-sm appearance-none cursor-pointer">
+                            <option value="" disabled selected class="bg-pathly-dark">Pilih pengalaman saat ini</option>
+                            <option value="Fresh Graduate" class="bg-pathly-dark">Fresh Graduate (0 Tahun)</option>
+                            <option value="< 1 Tahun" class="bg-pathly-dark">Kurang dari 1 Tahun</option>
+                            <option value="1-3 Tahun" class="bg-pathly-dark">1 - 3 Tahun</option>
+                            <option value="> 3 Tahun" class="bg-pathly-dark">Lebih dari 3 Tahun</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-pathly-white mb-1.5">Link Portofolio (Opsional)</label>
+                        <input type="url" placeholder="https://dribbble.com/..." class="glass-input w-full py-2.5 px-4 rounded-xl text-sm transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-pathly-white mb-1.5">Curriculum Vitae (CV) <span class="text-red-400">*</span></label>
+                    <div class="border-2 border-dashed border-pathly-primary/50 bg-pathly-dark/30 rounded-xl p-5 text-center cursor-pointer hover:bg-pathly-dark/50 transition">
+                        <svg class="w-6 h-6 text-pathly-primary mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                        <p class="text-xs text-pathly-light">Klik untuk mengunggah file PDF (Max 5MB)</p>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-pathly-primary text-pathly-white font-bold py-3.5 rounded-xl hover:bg-opacity-80 transition shadow-[0_4px_15px_rgba(74,127,167,0.4)] mt-2">
+                    Kirim Lamaran Sekarang
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-5 right-5 z-[80] transform translate-y-24 opacity-0 transition-all duration-300 bg-green-500/90 backdrop-blur-md border border-green-400 text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-3">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <div>
+            <p class="font-bold text-sm" id="toast-title">Berhasil!</p>
+            <p class="text-xs text-white/90" id="toast-msg">Pesan sukses</p>
+        </div>
+    </div>
+
     <script>
-        // Database Loker (Sekarang ditambahkan kategori, tipe, lokasi untuk filter)
         const jobsData = [
             {
-                id: 0,
-                title: "Laravel Fullstack Developer",
-                company: "PT Nusantara Teknologi",
-                category: "Web Development", // Untuk filter kategori
-                location: "Surabaya",        // Untuk filter dropdown lokasi
-                type: "Penuh Waktu",         // Untuk filter dropdown tipe
-                time: "Diunggah 2 hari lalu",
-                badge: "🔥 Butuh Cepat",
-                tags: ["Hybrid • Surabaya", "Penuh Waktu", "Rp6jt - 8jt"],
-                logoImg: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Laravel.svg",
-                logoText: null,
+                id: 0, title: "Laravel Fullstack Developer", company: "PT Nusantara Teknologi", category: "Web Development", location: "Surabaya", type: "Penuh Waktu", time: "Diunggah 2 hari lalu", badge: "🔥 Butuh Cepat",
+                tags: ["Hybrid • Surabaya", "Penuh Waktu", "Rp6jt - 8jt"], logoImg: "https://upload.wikimedia.org/wikipedia/commons/9/9a/Laravel.svg", logoText: null,
                 desc: "<li>Mengembangkan dan memelihara aplikasi web menggunakan framework Laravel.</li><li>Membuat UI/UX yang responsif menggunakan Tailwind CSS.</li><li>Berkolaborasi dengan tim untuk merancang arsitektur database.</li>",
                 qual: "<li>Pendidikan min. D3/S1 (terbuka untuk Fresh Graduate).</li><li>Memahami konsep MVC, OOP, dan Relational Database.</li><li>Familiar dengan Laravel versi 9/10 dan Tailwind CSS.</li>",
-                about: "Perusahaan teknologi yang berfokus pada digitalisasi UMKM di Indonesia.",
-                industry: "IT & Software",
-                size: "51-200 Karyawan"
+                about: "Perusahaan teknologi yang berfokus pada digitalisasi UMKM di Indonesia.", industry: "IT & Software", size: "51-200 Karyawan"
             },
             {
-                id: 1,
-                title: "UI/UX Designer (Fresh Grad)",
-                company: "Unicorn Design Studio",
-                category: "UI/UX Design",
-                location: "Jakarta",
-                type: "Magang",
-                time: "Diunggah 5 jam lalu",
-                badge: "",
-                tags: ["On-site • Jakarta", "Magang", "Rp5jt - 7jt"],
-                logoImg: null, 
-                logoText: "U",
-                logoColor: "text-blue-600",
+                id: 1, title: "UI/UX Designer (Fresh Grad)", company: "Unicorn Design Studio", category: "UI/UX Design", location: "Jakarta", type: "Magang", time: "Diunggah 5 jam lalu", badge: "",
+                tags: ["On-site • Jakarta", "Magang", "Rp2jt - 4jt"], logoImg: null, logoText: "U", logoColor: "text-blue-600",
                 desc: "<li>Membuat wireframe, prototipe, dan desain visual untuk aplikasi mobile dan web.</li><li>Melakukan riset pengguna (user research).</li><li>Berkolaborasi erat dengan tim developer.</li>",
                 qual: "<li>Portofolio desain UI/UX yang kuat.</li><li>Mahir menggunakan Figma.</li><li>Memahami prinsip dasar desain responsif.</li>",
-                about: "Agensi kreatif muda yang membantu startup membangun identitas visual.",
-                industry: "Creative Agency",
-                size: "11-50 Karyawan"
+                about: "Agensi kreatif muda yang membantu startup membangun identitas visual.", industry: "Creative Agency", size: "11-50 Karyawan"
             },
             {
-                id: 2,
-                title: "System Analyst Junior",
-                company: "Nusa Solusi IT",
-                category: "System Analysis",
-                location: "Remote",
-                type: "Penuh Waktu",
-                time: "Diunggah 1 minggu lalu",
-                badge: "",
-                tags: ["Remote", "Penuh Waktu", "Rahasia"],
-                logoImg: null, 
-                logoText: "N",
-                logoColor: "text-red-600",
+                id: 2, title: "System Analyst Junior", company: "Nusa Solusi IT", category: "System Analysis", location: "Remote", type: "Penuh Waktu", time: "Diunggah 1 minggu lalu", badge: "",
+                tags: ["Remote", "Penuh Waktu", "Rahasia"], logoImg: null, logoText: "N", logoColor: "text-red-600",
                 desc: "<li>Menganalisis kebutuhan sistem dari klien.</li><li>Merancang diagram alur sistem (UML, ERD).</li><li>Menjadi jembatan komunikasi antara klien dan programmer.</li>",
                 qual: "<li>Pengalaman 0-2 tahun.</li><li>Pemahaman kuat tentang SDLC.</li><li>Lulusan Sistem Informasi disukai.</li>",
-                about: "Konsultan IT berskala nasional untuk solusi enterprise.",
-                industry: "IT Consulting",
-                size: "201-500 Karyawan"
+                about: "Konsultan IT berskala nasional untuk solusi enterprise.", industry: "IT Consulting", size: "201-500 Karyawan"
             }
         ];
 
-        let activeCategory = ""; // Menyimpan kategori yang sedang dipilih
+        let activeCategory = ""; let activeJobId = 0; let interestList = []; let showInterestOnly = false; 
 
-        // 1. Fungsi Mengubah Kategori (Pill Buttons)
         function setCategory(cat) {
-            activeCategory = cat;
-            
-            // Ubah gaya visual tombol Pill
-            const pills = document.querySelectorAll('.cat-pill');
-            pills.forEach(pill => {
-                if(pill.innerText === cat || (cat === "" && pill.innerText === "Semua Pekerjaan")) {
-                    pill.classList.add('pill-active');
-                    pill.classList.remove('glass-card', 'text-pathly-light');
-                } else {
-                    pill.classList.remove('pill-active');
-                    pill.classList.add('glass-card', 'text-pathly-light');
-                }
-            });
-
-            applyFilters(); // Panggil fungsi filter utama
+            activeCategory = cat; showInterestOnly = false; updatePillStyles(); applyFilters();
         }
 
-        // 2. Fungsi Filter Utama (Search + Select + Kategori)
+        function toggleInterestMode() {
+            showInterestOnly = !showInterestOnly; activeCategory = ""; updatePillStyles(); applyFilters();
+        }
+
+        function updatePillStyles() {
+            const btnInterest = document.getElementById('btn-show-interest');
+            if(showInterestOnly) { btnInterest.classList.add('bg-yellow-500/20', 'border-yellow-400'); } 
+            else { btnInterest.classList.remove('bg-yellow-500/20', 'border-yellow-400'); }
+
+            document.querySelectorAll('.cat-pill').forEach(pill => {
+                if(!showInterestOnly && (pill.innerText === activeCategory || (activeCategory === "" && pill.innerText === "Semua Pekerjaan"))) {
+                    pill.classList.add('pill-active'); pill.classList.remove('glass-card', 'text-pathly-light');
+                } else {
+                    pill.classList.remove('pill-active'); pill.classList.add('glass-card', 'text-pathly-light');
+                }
+            });
+        }
+
         function applyFilters() {
             const searchText = document.getElementById('search-input').value.toLowerCase();
             const filterLocation = document.getElementById('filter-location').value;
             const filterType = document.getElementById('filter-type').value;
 
-            // Proses saring data
             const filteredJobs = jobsData.filter(job => {
                 const matchSearch = job.title.toLowerCase().includes(searchText) || job.company.toLowerCase().includes(searchText);
                 const matchLocation = filterLocation === "" || job.location === filterLocation;
                 const matchType = filterType === "" || job.type === filterType;
                 const matchCategory = activeCategory === "" || job.category === activeCategory;
+                const matchInterest = !showInterestOnly || interestList.includes(job.id); 
 
-                return matchSearch && matchLocation && matchType && matchCategory;
+                return matchSearch && matchLocation && matchType && matchCategory && matchInterest;
             });
 
-            renderJobs(filteredJobs); // Cetak kartu yang sesuai
+            renderJobs(filteredJobs);
         }
 
-        // 3. Fungsi Render (Mencetak) Kartu HTML
         function renderJobs(jobsToRender) {
             const container = document.getElementById('job-list-container');
-            container.innerHTML = ''; // Bersihkan kartu lama
+            container.innerHTML = ''; 
 
             if (jobsToRender.length === 0) {
-                // Munculkan peringatan kosong jika data tidak ada
                 document.getElementById('empty-state').classList.remove('hidden');
                 document.getElementById('detail-content-area').classList.add('hidden');
                 return;
             }
 
-            // Sembunyikan peringatan kosong
             document.getElementById('empty-state').classList.add('hidden');
             document.getElementById('detail-content-area').classList.remove('hidden');
 
-            // Cetak kartu baru menggunakan loop
             jobsToRender.forEach(job => {
                 let badgeHTML = job.badge ? `<div class="absolute top-0 right-0 bg-red-500/20 text-red-400 text-xs font-bold px-3 py-1 rounded-bl-lg border-b border-l border-red-500/30">${job.badge}</div>` : '';
-                
-                let logoHTML = job.logoImg 
-                    ? `<img src="${job.logoImg}" class="w-full h-full object-contain">` 
-                    : `<div class="font-bold ${job.logoColor} text-xl">${job.logoText}</div>`;
-
+                let logoHTML = job.logoImg ? `<img src="${job.logoImg}" class="w-full h-full object-contain">` : `<div class="font-bold ${job.logoColor} text-xl">${job.logoText}</div>`;
                 let tagsHTML = job.tags.map(tag => `<span class="bg-pathly-dark/50 text-pathly-light text-xs px-2.5 py-1 rounded-md border border-pathly-card">${tag}</span>`).join('');
+                let heartIndicator = interestList.includes(job.id) ? `<div class="absolute bottom-4 right-4 text-yellow-400 text-lg">⭐</div>` : '';
 
                 const cardHTML = `
-                    <div id="card-${job.id}" onclick="changeJob(${job.id})" class="job-card glass-card p-5 rounded-2xl cursor-pointer hover:border-pathly-primary/60 transition-all duration-300 relative overflow-hidden group">
-                        ${badgeHTML}
+                    <div id="card-${job.id}" onclick="changeJob(${job.id}, false)" class="job-card glass-card p-5 rounded-2xl cursor-pointer hover:border-pathly-primary/60 transition-all duration-300 relative overflow-hidden group">
+                        ${badgeHTML} ${heartIndicator}
                         <div class="flex items-start gap-4 mb-3">
-                            <div class="w-12 h-12 bg-white rounded-xl p-2 flex items-center justify-center shrink-0">
-                                ${logoHTML}
-                            </div>
+                            <div class="w-12 h-12 bg-white rounded-xl p-2 flex items-center justify-center shrink-0">${logoHTML}</div>
                             <div>
-                                <h3 class="text-lg font-bold text-pathly-white group-hover:text-pathly-primary transition-colors">${job.title}</h3>
+                                <h3 class="text-lg font-bold text-pathly-white group-hover:text-pathly-primary transition-colors pr-6">${job.title}</h3>
                                 <p class="text-sm text-pathly-light font-medium">${job.company}</p>
                             </div>
                         </div>
-                        <div class="flex flex-wrap gap-2 mt-4">
-                            ${tagsHTML}
-                        </div>
+                        <div class="flex flex-wrap gap-2 mt-4">${tagsHTML}</div>
                     </div>
                 `;
                 container.innerHTML += cardHTML;
             });
 
-            // Otomatis pilih pekerjaan pertama setelah difilter
-            changeJob(jobsToRender[0].id); 
+            // FIX: Tambahkan parameter true saat render pertama kali
+            changeJob(jobsToRender[0].id, true); 
         }
 
-        // 4. Fungsi Mengubah Detail Panel Kanan (Saat kartu di-klik)
-        function changeJob(jobId) {
+        // FIX: Tambahkan parameter isAutoSelect (default false)
+        function changeJob(jobId, isAutoSelect = false) {
+            activeJobId = jobId; 
             document.querySelectorAll('.job-card').forEach(card => {
-                card.classList.remove('job-card-active');
-                card.classList.add('hover:border-pathly-primary/60'); 
+                card.classList.remove('job-card-active'); card.classList.add('hover:border-pathly-primary/60'); 
             });
 
             const activeCard = document.getElementById('card-' + jobId);
             if(activeCard) {
-                activeCard.classList.add('job-card-active');
-                activeCard.classList.remove('hover:border-pathly-primary/60');
+                activeCard.classList.add('job-card-active'); activeCard.classList.remove('hover:border-pathly-primary/60');
             }
 
-            const data = jobsData.find(j => j.id === jobId); // Cari data berdasarkan ID
-
+            const data = jobsData.find(j => j.id === jobId);
             const contentArea = document.getElementById('detail-content-area');
-            contentArea.classList.remove('fade-in');
-            void contentArea.offsetWidth; 
-            contentArea.classList.add('fade-in');
+            contentArea.classList.remove('fade-in'); void contentArea.offsetWidth; contentArea.classList.add('fade-in');
 
             document.getElementById('detail-title').innerText = data.title;
             document.getElementById('detail-company').innerText = data.company;
@@ -383,23 +425,18 @@
 
             const logoImg = document.getElementById('detail-logo-img');
             const logoText = document.getElementById('detail-logo-text');
-
             if (data.logoImg !== null) {
-                logoImg.src = data.logoImg;
-                logoImg.classList.remove('hidden');
-                logoText.classList.add('hidden');
+                logoImg.src = data.logoImg; logoImg.classList.remove('hidden'); logoText.classList.add('hidden');
             } else {
-                logoImg.classList.add('hidden');
-                logoText.classList.remove('hidden');
-                logoText.innerText = data.logoText;
-                logoText.className = 'font-bold text-3xl ' + data.logoColor;
+                logoImg.classList.add('hidden'); logoText.classList.remove('hidden'); logoText.innerText = data.logoText; logoText.className = 'font-bold text-3xl ' + data.logoColor;
             }
 
-            // Pop-up HP
-            if (window.innerWidth < 1024) { 
+            updateInterestButtonUI();
+
+            // FIX: Pop-up di HP HANYA muncul jika bukan auto-select (artinya user benar-benar mengklik)
+            if (window.innerWidth < 1024 && !isAutoSelect) { 
                 const detailSection = document.getElementById('detail-section');
-                detailSection.classList.remove('hidden');
-                detailSection.classList.add('block'); 
+                detailSection.classList.remove('hidden'); detailSection.classList.add('block'); 
                 document.body.style.overflow = 'hidden'; 
             }
         }
@@ -410,9 +447,78 @@
             document.body.style.overflow = ''; 
         }
 
-        // Panggil renderJobs saat halaman pertama kali dimuat agar kartunya muncul
-        window.onload = () => renderJobs(jobsData);
+        function toggleCurrentInterest() {
+            const index = interestList.indexOf(activeJobId);
+            if (index === -1) {
+                interestList.push(activeJobId);
+                showToast("Dimasukkan ke Minat", "Pekerjaan ini tersimpan di daftar minatmu.");
+            } else {
+                interestList.splice(index, 1);
+                showToast("Dihapus dari Minat", "Pekerjaan dihapus dari daftar.");
+            }
+            
+            document.getElementById('interest-count').innerText = interestList.length;
+            updateInterestButtonUI();
+            if(showInterestOnly) { applyFilters(); } else { applyFilters(); } 
+        }
 
+        function updateInterestButtonUI() {
+            const btn = document.getElementById('btn-toggle-interest');
+            const text = document.getElementById('interest-text');
+            
+            if (interestList.includes(activeJobId)) {
+                btn.classList.add('border-yellow-400', 'bg-yellow-400/10', 'text-yellow-400');
+                btn.classList.remove('text-pathly-light');
+                text.innerText = "Tersimpan di Minat";
+            } else {
+                btn.classList.remove('border-yellow-400', 'bg-yellow-400/10', 'text-yellow-400');
+                btn.classList.add('text-pathly-light');
+                text.innerText = "Taruh Minat";
+            }
+        }
+
+        function openApplyModal() {
+            const data = jobsData.find(j => j.id === activeJobId);
+            document.getElementById('modal-job-title').innerText = data.title;
+            document.getElementById('modal-job-company').innerText = data.company;
+            
+            const modal = document.getElementById('apply-modal');
+            const content = document.getElementById('apply-modal-content');
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => { content.classList.add('modal-open'); }, 10);
+        }
+
+        function closeApplyModal() {
+            const modal = document.getElementById('apply-modal');
+            const content = document.getElementById('apply-modal-content');
+            
+            content.classList.remove('modal-open');
+            setTimeout(() => { modal.classList.add('hidden'); }, 300); 
+        }
+
+        function submitApplication(e) {
+            e.preventDefault(); 
+            closeApplyModal();
+            showToast("Lamaran Terkirim!", "Berkasmu telah berhasil dikirim ke perusahaan terkait.");
+        }
+
+        function showToast(title, msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-msg').innerText = msg;
+            
+            toast.classList.add('toast-show');
+            setTimeout(() => { toast.classList.remove('toast-show'); }, 3000); 
+        }
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => { mobileMenu.classList.toggle('open'); });
+        mobileMenu.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => mobileMenu.classList.remove('open')); });
+
+        window.onload = () => renderJobs(jobsData);
     </script>
 </body>
 </html>
