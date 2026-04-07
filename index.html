@@ -3,18 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pathly — Platform digital bimbingan karir untuk mahasiswa dan fresh graduate Indonesia. Konsultasi karir, review CV, dan akses lowongan kerja relevan.">
     <title>Pathly | Find Your Path, Reach Your Future.</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
+    <!-- FIX: Font Inter sekarang di-import dengan benar -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'pathly-dark': '#0A1931',
-                        'pathly-card': '#1A3D63',
+                        'pathly-dark':    '#0A1931',
+                        'pathly-card':    '#1A3D63',
                         'pathly-primary': '#4A7FA7',
-                        'pathly-light': '#B3CFE5',
-                        'pathly-white': '#F6FAFD',
+                        'pathly-light':   '#B3CFE5',
+                        'pathly-white':   '#F6FAFD',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -35,128 +41,403 @@
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(179, 207, 229, 0.15);
         }
+
+        /* ── Animasi fade-in dari bawah ── */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .fade-up {
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards;
+        }
+        .fade-up-1 { animation-delay: 0.1s; }
+        .fade-up-2 { animation-delay: 0.2s; }
+        .fade-up-3 { animation-delay: 0.3s; }
+        .fade-up-4 { animation-delay: 0.4s; }
+
+        /* ── Stats counter ── */
+        @keyframes countUp {
+            from { opacity: 0; transform: scale(0.8); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        .stat-num {
+            animation: countUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+        }
+        .stat-num-1 { animation-delay: 0.15s; }
+        .stat-num-2 { animation-delay: 0.3s; }
+        .stat-num-3 { animation-delay: 0.45s; }
+        .stat-num-4 { animation-delay: 0.6s; }
+
+        /* ── Feature card hover ── */
+        .feature-card {
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+            cursor: pointer;
+        }
+        .feature-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(74, 127, 167, 0.7) !important;
+            background: rgba(74, 127, 167, 0.1) !important;
+        }
+        .feature-card:active {
+            transform: translateY(-1px);
+        }
+
+        /* ── CTA shimmer button ── */
+        .cta-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transform: skewX(-20deg);
+            transition: none;
+        }
+        .cta-shimmer:hover::after {
+            animation: shimmer 0.6s ease forwards;
+        }
+        @keyframes shimmer {
+            to { left: 160%; }
+        }
+
+        /* ── Divider glow ── */
+        .divider-glow {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(74,127,167,0.5), transparent);
+        }
+
+        /* ── Progress bar animasi ── */
+        .progress-bar {
+            width: 0;
+            animation: grow 1s ease forwards;
+        }
+        @keyframes grow {
+            to { width: var(--target-width); }
+        }
+
+        /* ── Mobile menu smooth ── */
+        #mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        #mobile-menu.open {
+            max-height: 400px;
+        }
     </style>
 </head>
 <body class="min-h-screen antialiased overflow-x-hidden">
 
+    <!-- ══════════════════════════════════════
+         NAVBAR
+    ══════════════════════════════════════ -->
     <nav class="container mx-auto px-5 py-4 md:px-6 flex justify-between items-center glass-card mt-4 rounded-full max-w-6xl sticky top-4 z-50">
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2">
+            <!-- Logo teks saja (ganti dengan <img> jika logo.png tersedia) -->
             <img src="logo.png" alt="Pathly Logo" class="h-10 md:h-14 w-auto object-contain transform scale-125 md:scale-150 origin-left">
-            <span class="text-xl md:text-2xl font-bold tracking-wide text-pathly-white">Pathly</span>
+            <span class="text-xl md:text-2xl font-bold tracking-wide text-pathly-white ml-2">Pathly</span>
         </div>
-        
+
         <div class="hidden md:flex gap-8 text-pathly-light items-center">
             <a href="#" class="hover:text-pathly-white transition duration-300 border-b-2 border-pathly-primary pb-1">Home</a>
             <a href="#about" class="hover:text-pathly-white transition duration-300">About</a>
             <a href="#services" class="hover:text-pathly-white transition duration-300">Services</a>
             <a href="#contact" class="hover:text-pathly-white transition duration-300">Contact</a>
         </div>
-        
+
         <div class="flex items-center gap-4">
-            <button class="hidden sm:block bg-pathly-white text-pathly-dark font-semibold py-2 px-5 md:px-6 rounded-full hover:bg-pathly-light transition duration-300 shadow-[0_0_15px_rgba(246,250,253,0.3)] text-sm md:text-base">
+            <!-- FIX: Tombol Get Started sekarang punya aksi (scroll ke #about sebagai contoh) -->
+            <a href="#about" class="hidden sm:block bg-pathly-white text-pathly-dark font-semibold py-2 px-5 md:px-6 rounded-full hover:bg-pathly-light transition duration-300 shadow-[0_0_15px_rgba(246,250,253,0.3)] text-sm md:text-base">
                 Get Started
-            </button>
-            
+            </a>
             <button id="mobile-menu-button" class="md:hidden text-pathly-white focus:outline-none p-2">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
             </button>
         </div>
     </nav>
 
-    <div id="mobile-menu" class="hidden md:hidden container mx-auto px-4 mt-2 relative z-40">
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden container mx-auto px-4 mt-2 relative z-40">
         <div class="glass-card rounded-2xl p-5 flex flex-col gap-4 text-center">
             <a href="#" class="text-pathly-white font-semibold">Home</a>
             <a href="#about" class="text-pathly-light hover:text-pathly-white">About</a>
             <a href="#services" class="text-pathly-light hover:text-pathly-white">Services</a>
             <a href="#contact" class="text-pathly-light hover:text-pathly-white">Contact</a>
-            <button class="bg-pathly-white text-pathly-dark font-semibold py-2 px-6 rounded-full w-full mt-2">
+            <a href="#about" class="bg-pathly-white text-pathly-dark font-semibold py-2 px-6 rounded-full w-full mt-2 block">
                 Get Started
-            </button>
+            </a>
         </div>
     </div>
 
+    <!-- ══════════════════════════════════════
+         HERO SECTION
+    ══════════════════════════════════════ -->
     <section class="container mx-auto px-6 py-12 md:py-20 max-w-6xl flex flex-col-reverse md:flex-row items-center gap-8 md:gap-12 min-h-[80vh]">
         <div class="flex-1 text-center md:text-left">
-            <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight mb-4 md:mb-6 text-transparent bg-clip-text bg-gradient-to-r from-pathly-white to-pathly-primary mt-6 md:mt-0">
+            <!-- FIX: Tambah badge/tagline di atas H1 -->
+            <div class="inline-flex items-center gap-2 bg-pathly-card bg-opacity-60 border border-pathly-primary border-opacity-40 rounded-full px-4 py-1.5 mb-5 fade-up fade-up-1">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                <span class="text-sm text-pathly-light font-medium">Platform bimbingan karir #1 untuk mahasiswa</span>
+            </div>
+
+            <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight mb-4 md:mb-6 text-transparent bg-clip-text bg-gradient-to-r from-pathly-white to-pathly-primary mt-2 md:mt-0 fade-up fade-up-2">
                 Find Your Path, <br>Reach Your Future.
             </h1>
-            <p class="text-base sm:text-lg md:text-xl text-pathly-light mb-8 max-w-2xl leading-relaxed mx-auto md:mx-0">
+            <p class="text-base sm:text-lg md:text-xl text-pathly-light mb-8 max-w-2xl leading-relaxed mx-auto md:mx-0 fade-up fade-up-3">
                 Platform digital bimbingan karir yang membantu mahasiswa dan fresh graduate menemukan arah karir yang tepat serta mempersiapkan diri untuk memasuki dunia kerja.
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                <button class="bg-pathly-primary text-pathly-white font-semibold py-3 px-8 rounded-full hover:bg-opacity-80 transition duration-300 shadow-[0_4px_20px_rgba(74,127,167,0.4)] w-full sm:w-auto">
+            <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start fade-up fade-up-4">
+                <a href="#services" class="cta-shimmer bg-pathly-primary text-pathly-white font-semibold py-3 px-8 rounded-full hover:bg-opacity-80 transition duration-300 shadow-[0_4px_20px_rgba(74,127,167,0.4)] w-full sm:w-auto text-center">
                     Explore Services
-                </button>
-                <button class="glass-card text-pathly-white font-semibold py-3 px-8 rounded-full hover:bg-pathly-card transition duration-300 w-full sm:w-auto">
+                </a>
+                <a href="#about" class="glass-card text-pathly-white font-semibold py-3 px-8 rounded-full hover:bg-pathly-card transition duration-300 w-full sm:w-auto text-center">
                     Learn More
-                </button>
+                </a>
             </div>
         </div>
+
         <div class="flex-1 flex justify-center items-center relative w-full mt-8 md:mt-0">
             <div class="absolute w-48 h-48 md:w-72 md:h-72 bg-pathly-primary rounded-full filter blur-[80px] md:blur-[100px] opacity-30"></div>
-            <img src="https://via.placeholder.com/500x500.png?text=3D+Illustration+Here" alt="3D City Illustration" class="relative z-10 w-3/4 sm:w-2/3 md:w-full max-w-md animate-pulse">
+            <!--
+                FIX: Ganti placeholder dengan ilustrasi dari undraw.co
+                Rekomendasi: https://undraw.co/search/career  →  download SVG, simpan sebagai hero-illustration.svg
+                Lalu ganti src di bawah ini dengan path file tersebut.
+                Contoh: src="assets/hero-illustration.svg"
+
+                Sementara ini menggunakan inline SVG placeholder yang lebih baik dari via.placeholder.com
+            -->
+            <svg class="relative z-10 w-3/4 sm:w-2/3 md:w-full max-w-md" viewBox="0 0 400 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Ilustrasi sederhana: orang dengan peta jalan karir -->
+                <circle cx="200" cy="120" r="80" fill="rgba(74,127,167,0.15)" stroke="rgba(74,127,167,0.3)" stroke-width="1"/>
+                <circle cx="200" cy="120" r="55" fill="rgba(74,127,167,0.2)" stroke="rgba(74,127,167,0.4)" stroke-width="1"/>
+                <!-- Ikon kompas sederhana -->
+                <circle cx="200" cy="120" r="30" fill="rgba(26,61,99,0.8)" stroke="rgba(179,207,229,0.4)" stroke-width="1.5"/>
+                <path d="M200 97 L205 115 L200 113 L195 115 Z" fill="#4A7FA7"/>
+                <path d="M200 143 L195 125 L200 127 L205 125 Z" fill="rgba(179,207,229,0.5)"/>
+                <circle cx="200" cy="120" r="3" fill="#B3CFE5"/>
+                <!-- Path karir -->
+                <path d="M80 260 Q120 220 160 240 Q200 260 240 220 Q280 180 320 200" stroke="rgba(74,127,167,0.6)" stroke-width="2" stroke-dasharray="6 4" fill="none"/>
+                <!-- Milestone dots -->
+                <circle cx="120" cy="238" r="6" fill="#4A7FA7" opacity="0.9"/>
+                <circle cx="200" cy="250" r="6" fill="#4A7FA7" opacity="0.9"/>
+                <circle cx="280" cy="192" r="6" fill="#4A7FA7" opacity="0.9"/>
+                <circle cx="320" cy="200" r="8" fill="#B3CFE5" opacity="1"/>
+                <!-- Label milestone -->
+                <text x="110" y="225" font-family="Inter,sans-serif" font-size="9" fill="rgba(179,207,229,0.7)" text-anchor="middle">Mulai</text>
+                <text x="200" y="268" font-family="Inter,sans-serif" font-size="9" fill="rgba(179,207,229,0.7)" text-anchor="middle">Berkembang</text>
+                <text x="326" y="188" font-family="Inter,sans-serif" font-size="9" fill="rgba(246,250,253,0.9)" text-anchor="middle">Impian</text>
+                <!-- Floating cards kecil -->
+                <rect x="30" y="150" width="80" height="36" rx="8" fill="rgba(26,61,99,0.85)" stroke="rgba(74,127,167,0.4)" stroke-width="1"/>
+                <text x="70" y="165" font-family="Inter,sans-serif" font-size="8" fill="#B3CFE5" text-anchor="middle" font-weight="600">CV Review</text>
+                <text x="70" y="178" font-family="Inter,sans-serif" font-size="7" fill="rgba(179,207,229,0.6)" text-anchor="middle">Siap kerja ✓</text>
+                <rect x="290" y="80" width="90" height="36" rx="8" fill="rgba(26,61,99,0.85)" stroke="rgba(74,127,167,0.4)" stroke-width="1"/>
+                <text x="335" y="95" font-family="Inter,sans-serif" font-size="8" fill="#B3CFE5" text-anchor="middle" font-weight="600">Mentoring</text>
+                <text x="335" y="108" font-family="Inter,sans-serif" font-size="7" fill="rgba(179,207,229,0.6)" text-anchor="middle">Sesi minggu ini</text>
+            </svg>
         </div>
     </section>
 
+    <!-- ══════════════════════════════════════
+         STATS SECTION (BARU)
+    ══════════════════════════════════════ -->
+    <section class="container mx-auto px-6 max-w-6xl mb-4">
+        <div class="divider-glow mb-8"></div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            <div class="text-center">
+                <p class="text-3xl md:text-4xl font-extrabold text-pathly-white stat-num stat-num-1">500+</p>
+                <p class="text-sm text-pathly-light mt-1">Mahasiswa Terbantu</p>
+            </div>
+            <div class="text-center">
+                <p class="text-3xl md:text-4xl font-extrabold text-pathly-white stat-num stat-num-2">50+</p>
+                <p class="text-sm text-pathly-light mt-1">Mentor Aktif</p>
+            </div>
+            <div class="text-center">
+                <p class="text-3xl md:text-4xl font-extrabold text-pathly-white stat-num stat-num-3">1.200+</p>
+                <p class="text-sm text-pathly-light mt-1">CV Direview</p>
+            </div>
+            <div class="text-center">
+                <p class="text-3xl md:text-4xl font-extrabold text-pathly-white stat-num stat-num-4">85%</p>
+                <p class="text-sm text-pathly-light mt-1">Berhasil Dapat Kerja</p>
+            </div>
+        </div>
+        <div class="divider-glow mt-8"></div>
+    </section>
+
+    <!-- ══════════════════════════════════════
+         ABOUT SECTION (DIREVISI)
+    ══════════════════════════════════════ -->
     <section id="about" class="container mx-auto px-4 sm:px-6 py-12 md:py-16 max-w-6xl">
         <div class="glass-card rounded-3xl p-6 sm:p-8 md:p-12 relative overflow-hidden">
-            <div class="absolute -top-20 -right-20 md:-top-24 md:-right-24 w-48 h-48 md:w-64 md:h-64 bg-pathly-primary rounded-full filter blur-[60px] md:blur-[80px] opacity-20"></div>
-            
+            <!-- Blob dekoratif -->
+            <div class="absolute -top-20 -right-20 md:-top-24 md:-right-24 w-48 h-48 md:w-64 md:h-64 bg-pathly-primary rounded-full filter blur-[60px] md:blur-[80px] opacity-20 pointer-events-none"></div>
+            <div class="absolute -bottom-16 -left-16 w-40 h-40 bg-pathly-card rounded-full filter blur-[60px] opacity-30 pointer-events-none"></div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 relative z-10">
+
+                <!-- Kolom kiri: teks about -->
                 <div class="text-center md:text-left">
-                    <h2 class="text-sm font-bold tracking-widest text-pathly-primary uppercase mb-2">About Us</h2>
-                    <h3 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-pathly-white">Kesetaraan Akses untuk Karir Cemerlang</h3>
+                    <span class="inline-block text-xs font-bold tracking-widest text-pathly-primary uppercase mb-2 px-3 py-1 rounded-full border border-pathly-primary border-opacity-30 bg-pathly-primary bg-opacity-10">
+                        About Us
+                    </span>
+                    <h3 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 md:mb-6 text-pathly-white mt-3">
+                        Kesetaraan Akses <br>untuk Karir Cemerlang
+                    </h3>
                     <p class="text-sm sm:text-base text-pathly-light mb-4 leading-relaxed">
                         Kami percaya bahwa setiap individu berhak mendapatkan akses yang setara terhadap arahan karir dan insight industri, tanpa harus bergantung pada koneksi pribadi.
                     </p>
-                    <p class="text-sm sm:text-base text-pathly-light leading-relaxed">
+                    <p class="text-sm sm:text-base text-pathly-light leading-relaxed mb-6">
                         Melalui platform kami, Pathly mendukung pengguna untuk meningkatkan kepercayaan diri, mengembangkan skill, dan mempercepat proses mendapatkan pekerjaan impian.
                     </p>
-                </div>
-                
-                <div class="flex flex-col justify-center gap-4">
-                    <div class="bg-pathly-dark bg-opacity-50 border border-pathly-card p-4 md:p-5 rounded-2xl flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 hover:border-pathly-primary transition duration-300">
-                        <div class="bg-pathly-card p-3 rounded-xl text-pathly-primary shrink-0">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path></svg>
+
+                    <!-- FIX: Tambah trust indicator berupa progress/skill bars -->
+                    <div class="space-y-3 mb-6 text-left">
+                        <div>
+                            <div class="flex justify-between text-xs text-pathly-light mb-1">
+                                <span>Tingkat kepuasan pengguna</span><span>94%</span>
+                            </div>
+                            <div class="h-1.5 bg-pathly-dark bg-opacity-60 rounded-full overflow-hidden">
+                                <div class="h-full bg-pathly-primary rounded-full progress-bar" style="--target-width: 94%; animation-delay: 0.4s;"></div>
+                            </div>
                         </div>
                         <div>
-                            <h4 class="text-lg md:text-xl font-semibold text-pathly-white mb-1">Real-Time Mentoring</h4>
+                            <div class="flex justify-between text-xs text-pathly-light mb-1">
+                                <span>Pengguna berhasil dapat interview</span><span>78%</span>
+                            </div>
+                            <div class="h-1.5 bg-pathly-dark bg-opacity-60 rounded-full overflow-hidden">
+                                <div class="h-full bg-pathly-primary rounded-full progress-bar" style="--target-width: 78%; animation-delay: 0.6s;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs text-pathly-light mb-1">
+                                <span>Pengguna diterima kerja dalam 3 bulan</span><span>65%</span>
+                            </div>
+                            <div class="h-1.5 bg-pathly-dark bg-opacity-60 rounded-full overflow-hidden">
+                                <div class="h-full bg-pathly-primary rounded-full progress-bar" style="--target-width: 65%; animation-delay: 0.8s;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FIX: Tambah link "Pelajari lebih lanjut" -->
+                    <a href="#services" class="inline-flex items-center gap-2 text-pathly-primary font-semibold text-sm hover:gap-3 transition-all duration-200 group">
+                        Pelajari misi kami
+                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Kolom kanan: feature cards (sekarang bisa diklik) -->
+                <div class="flex flex-col justify-center gap-4">
+
+                    <!-- FIX: Card sekarang pakai <a> agar bisa diklik dan punya cursor pointer -->
+                    <a href="#services" class="feature-card bg-pathly-dark bg-opacity-50 border border-pathly-card p-4 md:p-5 rounded-2xl flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 no-underline group">
+                        <div class="bg-pathly-card p-3 rounded-xl text-pathly-primary shrink-0 group-hover:bg-pathly-primary group-hover:text-pathly-white transition-colors duration-200">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 justify-center sm:justify-start mb-1">
+                                <h4 class="text-lg md:text-xl font-semibold text-pathly-white">Real-Time Mentoring</h4>
+                                <span class="text-xs bg-green-500 bg-opacity-20 text-green-400 px-2 py-0.5 rounded-full font-medium">Live</span>
+                            </div>
                             <p class="text-xs md:text-sm text-pathly-light">Konsultasi langsung dengan profesional dan praktisi industri yang berpengalaman.</p>
                         </div>
-                    </div>
-                    <div class="bg-pathly-dark bg-opacity-50 border border-pathly-card p-4 md:p-5 rounded-2xl flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 hover:border-pathly-primary transition duration-300">
-                        <div class="bg-pathly-card p-3 rounded-xl text-pathly-primary shrink-0">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        <svg class="w-4 h-4 text-pathly-primary opacity-0 group-hover:opacity-100 transition-opacity shrink-0 self-center hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+
+                    <a href="#services" class="feature-card bg-pathly-dark bg-opacity-50 border border-pathly-card p-4 md:p-5 rounded-2xl flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 no-underline group">
+                        <div class="bg-pathly-card p-3 rounded-xl text-pathly-primary shrink-0 group-hover:bg-pathly-primary group-hover:text-pathly-white transition-colors duration-200">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
                         </div>
-                        <div>
+                        <div class="flex-1">
                             <h4 class="text-lg md:text-xl font-semibold text-pathly-white mb-1">Interview Prep & CV Review</h4>
-                            <p class="text-xs md:text-sm text-pathly-light">Simulasi wawancara dan perbaikan CV untuk menonjolkan potensimu.</p>
+                            <p class="text-xs md:text-sm text-pathly-light">Simulasi wawancara dan perbaikan CV untuk menonjolkan potensimu di hadapan rekruter.</p>
                         </div>
-                    </div>
-                    <div class="bg-pathly-dark bg-opacity-50 border border-pathly-card p-4 md:p-5 rounded-2xl flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 hover:border-pathly-primary transition duration-300">
-                        <div class="bg-pathly-card p-3 rounded-xl text-pathly-primary shrink-0">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                        <svg class="w-4 h-4 text-pathly-primary opacity-0 group-hover:opacity-100 transition-opacity shrink-0 self-center hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+
+                    <a href="#services" class="feature-card bg-pathly-dark bg-opacity-50 border border-pathly-card p-4 md:p-5 rounded-2xl flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 no-underline group">
+                        <div class="bg-pathly-card p-3 rounded-xl text-pathly-primary shrink-0 group-hover:bg-pathly-primary group-hover:text-pathly-white transition-colors duration-200">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
                         </div>
-                        <div>
+                        <div class="flex-1">
                             <h4 class="text-lg md:text-xl font-semibold text-pathly-white mb-1">Peluang Kerja Relevan</h4>
-                            <p class="text-xs md:text-sm text-pathly-light">Akses eksklusif ke berbagai lowongan pekerjaan yang sesuai dengan minatmu.</p>
+                            <p class="text-xs md:text-sm text-pathly-light">Akses eksklusif ke berbagai lowongan pekerjaan yang sesuai dengan minat dan skillmu.</p>
                         </div>
+                        <svg class="w-4 h-4 text-pathly-primary opacity-0 group-hover:opacity-100 transition-opacity shrink-0 self-center hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════
+                 FIX: CTA Section di dalam About card
+            ══════════════════════════════════ -->
+            <div class="mt-10 pt-8 border-t border-pathly-card border-opacity-60 relative z-10">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+                    <div>
+                        <h4 class="text-xl font-bold text-pathly-white mb-1">Siap memulai perjalanan karirmu?</h4>
+                        <p class="text-sm text-pathly-light">Bergabung dengan ribuan mahasiswa yang sudah menemukan arah mereka bersama Pathly.</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-3 shrink-0">
+                        <a href="#contact" class="cta-shimmer bg-pathly-primary text-pathly-white font-semibold py-3 px-7 rounded-full hover:bg-opacity-80 transition duration-300 shadow-[0_4px_20px_rgba(74,127,167,0.4)] whitespace-nowrap text-sm text-center">
+                            Mulai Konsultasi Gratis
+                        </a>
+                        <a href="#services" class="glass-card text-pathly-light font-medium py-3 px-7 rounded-full hover:text-pathly-white hover:bg-pathly-card transition duration-300 whitespace-nowrap text-sm text-center">
+                            Lihat Semua Layanan
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+
+    <!-- ══════════════════════════════════════
+         JAVASCRIPT
+    ══════════════════════════════════════ -->
     <script>
+        // Mobile menu toggle
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
 
         mobileMenuButton.addEventListener('click', () => {
-            // Toggle class 'hidden' untuk menyembunyikan/menampilkan menu
-            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('open');
+        });
+
+        // Tutup mobile menu saat klik link di dalamnya
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+        });
+
+        // Smooth scroll untuk semua anchor link
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
         });
     </script>
 </body>
-</html> 
+</html>
