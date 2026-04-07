@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pathly — Platform digital bimbingan karir untuk mahasiswa dan fresh graduate Indonesia. Konsultasi karir, review CV, dan akses lowongan kerja relevan.">
+    <title>Pathly | Mentoring & Review CV</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pathly-dark':    '#0A1931',
+                        'pathly-card':    '#1A3D63',
+                        'pathly-primary': '#4A7FA7',
+                        'pathly-light':   '#B3CFE5',
+                        'pathly-white':   '#F6FAFD',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: radial-gradient(circle at 50% 0%, #1A3D63 0%, #0A1931 60%);
+            background-color: #0A1931;
+            color: #F6FAFD;
+        }
+        .glass-card {
+            background: rgba(26, 61, 99, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(179, 207, 229, 0.15);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .fade-up {
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards;
+        }
+        .fade-up-1 { animation-delay: 0.1s; }
+        .fade-up-2 { animation-delay: 0.2s; }
+        .fade-up-3 { animation-delay: 0.3s; }
+        .fade-up-4 { animation-delay: 0.4s; }
+
+        @keyframes countUp {
+            from { opacity: 0; transform: scale(0.8); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        .stat-num {
+            animation: countUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+        }
+        .stat-num-1 { animation-delay: 0.15s; }
+        .stat-num-2 { animation-delay: 0.3s; }
+        .stat-num-3 { animation-delay: 0.45s; }
+        .stat-num-4 { animation-delay: 0.6s; }
+
+        .feature-card {
+            transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+            cursor: pointer;
+        }
+        .feature-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(74, 127, 167, 0.7) !important;
+            background: rgba(74, 127, 167, 0.1) !important;
+        }
+        .feature-card:active {
+            transform: translateY(-1px);
+        }
+
+        .cta-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transform: skewX(-20deg);
+            transition: none;
+        }
+        .cta-shimmer:hover::after {
+            animation: shimmer 0.6s ease forwards;
+        }
+        @keyframes shimmer {
+            to { left: 160%; }
+        }
+
+        /* ── Divider glow ── */
+        .divider-glow {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(74,127,167,0.5), transparent);
+        }
+
+        /* ── Progress bar animasi ── */
+        .progress-bar {
+            width: 0;
+            animation: grow 1s ease forwards;
+        }
+        @keyframes grow {
+            to { width: var(--target-width); }
+        }
+
+        /* ── Mobile menu smooth ── */
+        #mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        #mobile-menu.open {
+            max-height: 400px;
+        }
+    </style>
+</head>
+<body class="min-h-screen antialiased overflow-x-hidden pb-10">
+
+    <!-- ══════════════════════════════════════
+         NAVBAR
+    ══════════════════════════════════════ -->
+    <nav class="container mx-auto px-5 py-4 md:px-6 flex justify-between items-center glass-card mt-4 rounded-full max-w-6xl sticky top-4 z-50">
+        <div class="flex items-center gap-2">
+            <!-- Logo teks saja (ganti dengan <img> jika logo.png tersedia) -->
+            <img src="logo.png" alt="Pathly Logo" class="h-10 md:h-14 w-auto object-contain transform scale-125 md:scale-150 origin-left">
+            <span class="text-xl md:text-2xl font-bold tracking-wide text-pathly-white ml-2">Pathly</span>
+        </div>
+
+        <div class="hidden md:flex gap-8 text-pathly-light items-center">
+            <a href="index.html" class="hover:text-pathly-white transition duration-300">Home</a>
+            <a href="loker.html" class="hover:text-pathly-white transition duration-300">Loker</a>
+            <a href="mentoring.html" class="hover:text-pathly-white transition duration-300 border-b-2 border-pathly-primary pb-1 text-pathly-white">Mentoring & Review CV</a>
+            <a href="#campus" class="hover:text-pathly-white transition duration-300">Campus</a>
+        </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <!-- FIX: Tombol Get Started sekarang punya aksi (scroll ke #about sebagai contoh) -->
+            <a href="#about" class="hidden sm:block bg-pathly-white text-pathly-dark font-semibold py-2 px-5 md:px-6 rounded-full hover:bg-pathly-light transition duration-300 shadow-[0_0_15px_rgba(246,250,253,0.3)] text-sm md:text-base">
+                Get Started
+            </a>
+            <button id="mobile-menu-button" class="md:hidden text-pathly-white focus:outline-none p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <div class="container mx-auto max-w-6xl px-6 mt-8 flex justify-center">
+        <div class="glass-card p-1.5 rounded-full inline-flex gap-2 text-sm font-medium overflow-x-auto w-full sm:w-auto">
+            <button onclick="switchTab('explore')" id="tab-explore" class="tab-active px-6 py-2.5 rounded-full transition-all whitespace-nowrap">Explore Mentor</button>
+            <button onclick="switchTab('sessions')" id="tab-sessions" class="tab-inactive px-6 py-2.5 rounded-full transition-all whitespace-nowrap">Sesi Saya</button>
+            <button onclick="switchTab('register')" id="tab-register" class="tab-inactive px-6 py-2.5 rounded-full transition-all whitespace-nowrap">Daftar Menjadi Mentor</button>
+        </div>
+    </div>
+
+    <main class="container mx-auto max-w-6xl px-6 mt-10 mb-10">
+
+        <section id="view-explore" class="block animate-fade-in">
+            <div class="flex flex-col md:flex-row gap-4 mb-8 glass-card p-4 rounded-2xl">
+                <input type="text" id="search-job" placeholder="Cari bidang pekerjaan (UI/UX, Data, dll)..." class="flex-1 bg-pathly-dark border border-pathly-card text-pathly-white px-4 py-3 rounded-xl focus:outline-none focus:border-pathly-primary" oninput="filterMentors()">
+                <select id="filter-level" class="bg-pathly-dark border border-pathly-card text-pathly-white px-4 py-3 rounded-xl focus:outline-none focus:border-pathly-primary md:w-48" onchange="filterMentors()">
+                    <option value="All">Semua Level</option>
+                    <option value="Junior">Junior</option>
+                    <option value="Senior">Senior</option>
+                </select>
+            </div>
+
+            <div id="mentor-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                </div>
+        </section>
+
+        <section id="view-detail" class="hidden animate-fade-in">
+            <button onclick="switchTab('explore')" class="text-pathly-light hover:text-pathly-white mb-6 flex items-center gap-2">
+                &larr; Kembali ke Explore
+            </button>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="md:col-span-2 space-y-6">
+                    <div class="glass-card p-6 md:p-8 rounded-3xl flex gap-6 items-center">
+                        <div class="w-24 h-24 rounded-full bg-pathly-dark border-2 border-pathly-primary overflow-hidden flex items-center justify-center shrink-0">
+                            <svg class="w-12 h-12 text-pathly-light" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-3 mb-1">
+                                <h2 id="dt-name" class="text-2xl font-bold text-pathly-white">Nama Mentor</h2>
+                                <span id="dt-level" class="text-xs px-2 py-1 rounded-md font-semibold bg-blue-500 bg-opacity-20 text-blue-300">Level</span>
+                            </div>
+                            <p id="dt-title" class="text-pathly-light font-medium">Jabatan</p>
+                            <p id="dt-company" class="text-sm text-gray-400">Perusahaan</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="glass-card p-5 rounded-2xl text-center">
+                            <p class="text-3xl font-bold text-pathly-primary" id="dt-session-count">0</p>
+                            <p class="text-xs text-pathly-light mt-1">Total Sesi</p>
+                        </div>
+                        <div class="glass-card p-5 rounded-2xl text-center">
+                            <p class="text-3xl font-bold text-green-400" id="dt-attendance">0%</p>
+                            <p class="text-xs text-pathly-light mt-1">Kehadiran</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-3xl">
+                        <h3 class="text-lg font-semibold border-b border-pathly-card pb-3 mb-4">Pengalaman Kerja</h3>
+                        <ul id="dt-exp" class="list-disc list-inside text-sm text-pathly-light space-y-2"></ul>
+                        
+                        <h3 class="text-lg font-semibold border-b border-pathly-card pb-3 mb-4 mt-8">Pendidikan</h3>
+                        <ul id="dt-edu" class="list-disc list-inside text-sm text-pathly-light space-y-2"></ul>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 rounded-3xl h-fit sticky top-28">
+                    <h3 class="text-lg font-bold text-pathly-white mb-4">Pesan Sesi</h3>
+                    
+                    <div class="space-y-4 mb-6">
+                        <div>
+                            <label class="block text-xs text-pathly-light mb-1">Pilih Layanan</label>
+                            <select id="booking-service" class="w-full bg-pathly-dark border border-pathly-card rounded-xl p-2.5 text-sm" onchange="updatePriceDisplay()">
+                                <option value="Konsultasi Online">Konsultasi Online</option>
+                                <option value="Review CV Online">Review CV Online</option>
+                                <option value="Mock Up Interview">Mock Up Interview</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-pathly-light mb-1">Pilih Jadwal</label>
+                            <select id="booking-schedule" class="w-full bg-pathly-dark border border-pathly-card rounded-xl p-2.5 text-sm">
+                                <option>Senin, 19:00 - 20:00 WIB</option>
+                                <option>Rabu, 20:00 - 21:00 WIB</option>
+                                <option>Jumat, 19:30 - 20:30 WIB</option>
+                                <option>Sabtu, 10:00 - 11:00 WIB</option>
+                            </select>
+                        </div>
+                        <div class="flex justify-between items-center py-2 border-t border-pathly-card">
+                            <span class="text-sm">Harga:</span>
+                            <span id="booking-price" class="font-bold text-pathly-primary text-lg">Rp 0</span>
+                        </div>
+                        <button onclick="addToCart()" class="w-full border border-pathly-primary text-pathly-primary hover:bg-pathly-primary hover:text-white py-2 rounded-xl text-sm font-medium transition">
+                            + Tambah ke List Pesanan
+                        </button>
+                    </div>
+
+                    <div class="bg-pathly-dark bg-opacity-50 p-4 rounded-xl">
+                        <h4 class="text-sm font-semibold mb-3 border-b border-pathly-card pb-2">List Pesanan Kamu:</h4>
+                        <div id="cart-items" class="space-y-2 mb-4 max-h-32 overflow-y-auto">
+                            <p class="text-xs text-center text-gray-500 italic">Belum ada sesi dipilih</p>
+                        </div>
+                        <div class="flex justify-between font-bold text-sm mb-4">
+                            <span>Total Harga:</span>
+                            <span id="cart-total" class="text-pathly-white">Rp 0</span>
+                        </div>
+                        <button onclick="checkout()" class="w-full bg-green-600 hover:bg-green-500 text-white py-3 rounded-xl font-bold shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed" id="btn-checkout" disabled>
+                            Konfirmasi & Bayar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-sessions" class="hidden animate-fade-in">
+            <h2 class="text-2xl font-bold mb-6">Jadwal Sesi Saya</h2>
+            <div id="my-sessions-list" class="space-y-4">
+                </div>
+            <div id="empty-sessions" class="text-center py-12 glass-card rounded-3xl mt-4">
+                <p class="text-pathly-light">Kamu belum memesan sesi apapun.</p>
+                <button onclick="switchTab('explore')" class="mt-4 bg-pathly-primary px-6 py-2 rounded-full text-sm font-semibold">Cari Mentor</button>
+            </div>
+        </section>
+
+        <section id="view-register" class="hidden animate-fade-in">
+            <div class="max-w-2xl mx-auto glass-card p-8 rounded-3xl">
+                
+                <div class="flex gap-2 mb-8">
+                    <div class="h-2 flex-1 bg-pathly-primary rounded-full transition-all" id="reg-progress-1"></div>
+                    <div class="h-2 flex-1 bg-pathly-dark rounded-full transition-all" id="reg-progress-2"></div>
+                </div>
+
+                <div id="reg-step-1">
+                    <h2 class="text-2xl font-bold mb-2">Informasi Data Diri</h2>
+                    <p class="text-sm text-pathly-light mb-6">Ceritakan tentang dirimu sebelum bergabung menjadi mentor Pathly.</p>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm mb-1">Nama Lengkap</label>
+                            <input type="text" class="w-full bg-pathly-dark border border-pathly-card px-4 py-2.5 rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Email Profesional</label>
+                            <input type="email" class="w-full bg-pathly-dark border border-pathly-card px-4 py-2.5 rounded-xl">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Nomor WhatsApp</label>
+                            <input type="text" class="w-full bg-pathly-dark border border-pathly-card px-4 py-2.5 rounded-xl">
+                        </div>
+                        <button onclick="nextStep()" class="w-full bg-pathly-primary py-3 rounded-xl font-bold mt-6 hover:bg-opacity-80 transition">Selanjutnya</button>
+                    </div>
+                </div>
+
+                <div id="reg-step-2" class="hidden">
+                    <h2 class="text-2xl font-bold mb-2">Riwayat Profesional</h2>
+                    <p class="text-sm text-pathly-light mb-6">Kami akan menentukan status mentormu berdasarkan total pengalaman kerja.</p>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm mb-1">Pekerjaan / Jabatan Saat Ini</label>
+                            <input type="text" class="w-full bg-pathly-dark border border-pathly-card px-4 py-2.5 rounded-xl" placeholder="Contoh: Product Manager">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1">Perusahaan</label>
+                            <input type="text" class="w-full bg-pathly-dark border border-pathly-card px-4 py-2.5 rounded-xl" placeholder="Contoh: GoTo">
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-1 text-pathly-light">Total Lama Pengalaman Kerja (Tahun)</label>
+                            <input type="number" id="reg-years" min="1" class="w-full bg-pathly-dark border border-pathly-card px-4 py-2.5 rounded-xl focus:border-pathly-primary outline-none" placeholder="Masukkan angka (contoh: 3)">
+                            <p class="text-xs text-gray-400 mt-1">* Dibawah 3 tahun = Junior, Minimal 3 tahun = Senior</p>
+                        </div>
+                        <div class="flex gap-4 mt-6">
+                            <button onclick="prevStep()" class="w-1/3 border border-pathly-card py-3 rounded-xl font-bold hover:bg-pathly-dark transition">Kembali</button>
+                            <button onclick="submitRegister()" class="w-2/3 bg-green-600 py-3 rounded-xl font-bold hover:bg-green-500 transition">Kirim Pendaftaran</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="reg-success" class="hidden text-center py-8">
+                    <div class="w-20 h-20 bg-green-500 bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-10 h-10 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                    <h2 class="text-3xl font-bold mb-2">Selamat!</h2>
+                    <p class="text-lg text-pathly-light mb-4">Kamu resmi bergabung menjadi Mentor di Pathly.</p>
+                    <div class="inline-block bg-pathly-dark border border-pathly-primary px-6 py-3 rounded-2xl mb-8">
+                        <span class="text-sm block mb-1">Status Level Mentor-mu:</span>
+                        <span id="assigned-level" class="text-2xl font-bold text-pathly-primary">Senior</span>
+                    </div>
+                    <button onclick="switchTab('explore')" class="block w-full bg-pathly-card py-3 rounded-xl font-bold hover:bg-pathly-dark transition border border-pathly-primary">Mulai Ekplorasi Dashboard</button>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <div id="custom-alert" class="fixed inset-0 bg-black bg-opacity-60 z-[100] hidden flex items-center justify-center backdrop-blur-sm">
+        <div class="glass-card p-8 rounded-3xl text-center max-w-sm w-full mx-4 shadow-2xl scale-95 transition-transform duration-200" id="alert-box">
+            <div class="w-16 h-16 bg-green-500 bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Pemesanan Berhasil!</h3>
+            <p class="text-sm text-pathly-light mb-6">Silakan cek menu Sesi Saya untuk detail jadwal.</p>
+            <button onclick="closeAlertAndGoToSessions()" class="w-full bg-pathly-primary py-2.5 rounded-xl font-bold">Lanjut</button>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA MOCKUP ---
+        const mentors = [
+            { id: 1, name: "Raditya Dika", level: "Senior", job: "Lead Data Scientist", company: "Gojek", status: "Tersedia", sessions: 145, attendance: 99, exp: ["Gojek (2019-Sekarang)", "Tokopedia (2016-2019)"], edu: ["S2 Computer Science, ITB", "S1 Sistem Informasi, UI"] },
+            { id: 2, name: "Nabila Putri", level: "Junior", job: "UI/UX Designer", company: "Traveloka", status: "Tersedia", sessions: 42, attendance: 95, exp: ["Traveloka (2022-Sekarang)", "Intern Ruangguru (2021)"], edu: ["S1 Desain Komunikasi Visual, Binus"] },
+            { id: 3, name: "Reza Rahadian", level: "Senior", job: "Senior Product Manager", company: "Shopee", status: "Penuh", sessions: 210, attendance: 100, exp: ["Shopee (2020-Sekarang)", "OVO (2017-2020)"], edu: ["S1 Teknik Industri, UI"] },
+            { id: 4, name: "Ayu Lestari", level: "Junior", job: "Frontend Engineer", company: "Bibit", status: "Tersedia", sessions: 28, attendance: 92, exp: ["Bibit (2023-Sekarang)"], edu: ["S1 Ilmu Komputer, UGM"] },
+            { id: 5, name: "Andi Saputra", level: "Senior", job: "Backend Lead", company: "Tiket.com", status: "Tersedia", sessions: 180, attendance: 97, exp: ["Tiket.com (2018-Sekarang)", "Bukalapak (2015-2018)"], edu: ["S1 Teknik Informatika, ITS"] },
+            { id: 6, name: "Dina Mariana", level: "Junior", job: "Data Analyst", company: "Kredivo", status: "Tersedia", sessions: 15, attendance: 100, exp: ["Kredivo (2023-Sekarang)"], edu: ["S1 Statistika, Unpad"] },
+            { id: 7, name: "Bimo Arya", level: "Senior", job: "UX Researcher", company: "Grab", status: "Tersedia", sessions: 95, attendance: 98, exp: ["Grab (2021-Sekarang)", "Gojek (2018-2021)"], edu: ["S1 Psikologi, UI"] },
+            { id: 8, name: "Siska Saraswati", level: "Junior", job: "Digital Marketer", company: "Ruangguru", status: "Penuh", sessions: 55, attendance: 94, exp: ["Ruangguru (2022-Sekarang)"], edu: ["S1 Ilmu Komunikasi, Undip"] }
+        ];
+
+        // Harga berdasarkan Level & Layanan
+        const pricing = {
+            "Junior": { "Konsultasi Online": 50000, "Review CV Online": 65000, "Mock Up Interview": 55000 },
+            "Senior": { "Konsultasi Online": 60000, "Review CV Online": 75000, "Mock Up Interview": 65000 }
+        };
+
+        // State Aplikasi
+        let currentMentorId = null;
+        let cart = [];
+        let mySessions = [];
+
+        // --- CORE NAVIGATION ---
+        function switchTab(tabName) {
+            // Hide all views
+            ['explore', 'detail', 'sessions', 'register'].forEach(v => document.getElementById(`view-${v}`).classList.add('hidden'));
+            
+            // Show selected view
+            document.getElementById(`view-${tabName}`).classList.remove('hidden');
+
+            // Reset tab styles
+            ['explore', 'sessions', 'register'].forEach(v => {
+                const btn = document.getElementById(`tab-${v}`);
+                if(btn) {
+                    btn.classList.remove('tab-active');
+                    btn.classList.add('tab-inactive');
+                }
+            });
+
+            // Active current tab
+            if(tabName !== 'detail') {
+                const activeBtn = document.getElementById(`tab-${tabName}`);
+                if(activeBtn) {
+                    activeBtn.classList.remove('tab-inactive');
+                    activeBtn.classList.add('tab-active');
+                }
+            }
+
+            // Specific Logic
+            if(tabName === 'explore') renderMentors();
+            if(tabName === 'sessions') renderMySessions();
+        }
+
+        // --- EXPLORE TAB ---
+        function renderMentors(data = mentors) {
+            const grid = document.getElementById('mentor-grid');
+            grid.innerHTML = '';
+            
+            if(data.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-center py-10 text-pathly-light">Mentor tidak ditemukan.</p>';
+                return;
+            }
+
+            data.forEach(m => {
+                const levelColor = m.level === 'Senior' ? 'text-purple-300 bg-purple-500' : 'text-blue-300 bg-blue-500';
+                const statusColor = m.status === 'Tersedia' ? 'bg-green-500' : 'bg-red-500';
+                
+                grid.innerHTML += `
+                    <div class="glass-card rounded-2xl p-5 mentor-card border border-pathly-card flex flex-col h-full" onclick="openDetail(${m.id})">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="w-14 h-14 rounded-full bg-pathly-dark flex items-center justify-center border border-pathly-primary overflow-hidden">
+                                <svg class="w-8 h-8 text-pathly-light" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                            </div>
+                            <span class="text-[10px] flex items-center gap-1.5 bg-pathly-dark px-2 py-1 rounded-md border border-pathly-card">
+                                <span class="w-2 h-2 rounded-full ${statusColor}"></span>
+                                ${m.status}
+                            </span>
+                        </div>
+                        <h3 class="font-bold text-lg leading-tight mb-1">${m.name}</h3>
+                        <p class="text-xs ${levelColor} bg-opacity-20 px-2 py-0.5 rounded inline-block w-fit mb-3 font-semibold">${m.level}</p>
+                        <div class="mt-auto pt-4 border-t border-pathly-card border-opacity-50">
+                            <p class="text-sm font-medium text-pathly-white truncate">${m.job}</p>
+                            <p class="text-xs text-pathly-light truncate">${m.company}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function filterMentors() {
+            const jobKeyword = document.getElementById('search-job').value.toLowerCase();
+            const levelFilter = document.getElementById('filter-level').value;
+
+            const filtered = mentors.filter(m => {
+                const matchJob = m.job.toLowerCase().includes(jobKeyword) || m.company.toLowerCase().includes(jobKeyword);
+                const matchLevel = levelFilter === "All" || m.level === levelFilter;
+                return matchJob && matchLevel;
+            });
+            renderMentors(filtered);
+        }
+
+        // --- MENTOR DETAIL & BOOKING ---
+        function openDetail(id) {
+            const mentor = mentors.find(m => m.id === id);
+            currentMentorId = mentor.id;
+            
+            // Populate data
+            document.getElementById('dt-name').innerText = mentor.name;
+            document.getElementById('dt-level').innerText = mentor.level;
+            document.getElementById('dt-level').className = `text-xs px-2 py-1 rounded-md font-semibold ${mentor.level === 'Senior' ? 'bg-purple-500 text-purple-300' : 'bg-blue-500 text-blue-300'} bg-opacity-20`;
+            document.getElementById('dt-title').innerText = mentor.job;
+            document.getElementById('dt-company').innerText = mentor.company;
+            document.getElementById('dt-session-count').innerText = mentor.sessions + "+";
+            document.getElementById('dt-attendance').innerText = mentor.attendance + "%";
+            
+            document.getElementById('dt-exp').innerHTML = mentor.exp.map(e => `<li>${e}</li>`).join('');
+            document.getElementById('dt-edu').innerHTML = mentor.edu.map(e => `<li>${e}</li>`).join('');
+
+            const btnAdd = document.querySelector('button[onclick="addToCart()"]');
+            const bookingService = document.getElementById('booking-service');
+            const bookingSchedule = document.getElementById('booking-schedule');
+
+            if (mentor.status === "Penuh") {
+                btnAdd.disabled = true;
+                btnAdd.innerText = "Jadwal Penuh";
+                btnAdd.classList.replace('text-pathly-primary', 'text-gray-500');
+                btnAdd.classList.replace('border-pathly-primary', 'border-gray-600');
+                btnAdd.classList.add('cursor-not-allowed', 'opacity-50');
+                
+                // Opsional: nonaktifkan input pilihan
+                bookingService.disabled = true;
+                bookingSchedule.disabled = true;
+            } else {
+                btnAdd.disabled = false;
+                btnAdd.innerText = "+ Tambah ke List Pesanan";
+                btnAdd.classList.replace('text-gray-500', 'text-pathly-primary');
+                btnAdd.classList.replace('border-gray-600', 'border-pathly-primary');
+                btnAdd.classList.remove('cursor-not-allowed', 'opacity-50');
+                
+                bookingService.disabled = false;
+                bookingSchedule.disabled = false;
+            }
+
+            // Reset cart
+            cart = [];
+            renderCart();
+            updatePriceDisplay();
+
+            switchTab('detail');
+        }
+
+        function updatePriceDisplay() {
+            if(!currentMentorId) return;
+            const mentor = mentors.find(m => m.id === currentMentorId);
+            const service = document.getElementById('booking-service').value;
+            const price = pricing[mentor.level][service];
+            document.getElementById('booking-price').innerText = `Rp ${price.toLocaleString('id-ID')}`;
+        }
+
+        function addToCart() {
+            const mentor = mentors.find(m => m.id === currentMentorId);
+            const service = document.getElementById('booking-service').value;
+            const schedule = document.getElementById('booking-schedule').value;
+            const price = pricing[mentor.level][service];
+
+            cart.push({ mentorName: mentor.name, service, schedule, price });
+            renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total');
+            const btn = document.getElementById('btn-checkout');
+
+            if(cart.length === 0) {
+                container.innerHTML = '<p class="text-xs text-center text-gray-500 italic">Belum ada sesi dipilih</p>';
+                totalEl.innerText = 'Rp 0';
+                btn.disabled = true;
+                return;
+            }
+
+            let total = 0;
+            container.innerHTML = cart.map((item, index) => {
+                total += item.price;
+                return `
+                <div class="bg-pathly-dark border border-pathly-card p-2 rounded-lg relative">
+                    <button onclick="removeFromCart(${index})" class="absolute top-2 right-2 text-red-400 hover:text-red-600 text-xs font-bold">&times;</button>
+                    <p class="text-xs font-bold text-pathly-primary">${item.service}</p>
+                    <p class="text-[10px] text-pathly-light">${item.schedule}</p>
+                    <p class="text-xs font-semibold mt-1">Rp ${item.price.toLocaleString('id-ID')}</p>
+                </div>
+                `;
+            }).join('');
+            
+            totalEl.innerText = `Rp ${total.toLocaleString('id-ID')}`;
+            btn.disabled = false;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            renderCart();
+        }
+
+        function checkout() {
+            // Pindahkan cart ke mySessions
+            mySessions = [...mySessions, ...cart];
+            
+            // Tampilkan alert sukses custom
+            document.getElementById('custom-alert').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('alert-box').classList.remove('scale-95');
+                document.getElementById('alert-box').classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeAlertAndGoToSessions() {
+            document.getElementById('custom-alert').classList.add('hidden');
+            document.getElementById('alert-box').classList.replace('scale-100', 'scale-95');
+            switchTab('sessions');
+        }
+
+        // --- SESI SAYA TAB ---
+        function renderMySessions() {
+            const list = document.getElementById('my-sessions-list');
+            const emptyState = document.getElementById('empty-sessions');
+
+            if(mySessions.length === 0) {
+                list.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            list.innerHTML = mySessions.map((session, i) => `
+                <div class="glass-card p-5 rounded-2xl border-l-4 border-pathly-primary flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <span class="text-xs bg-pathly-dark px-2 py-1 rounded text-pathly-light border border-pathly-card mb-2 inline-block">Order #${1000 + i}</span>
+                        <h4 class="text-lg font-bold text-pathly-white">${session.service}</h4>
+                        <p class="text-sm text-pathly-light">Mentor: <span class="font-semibold text-white">${session.mentorName}</span></p>
+                    </div>
+                    <div class="bg-pathly-dark bg-opacity-60 p-3 rounded-xl border border-pathly-card text-center min-w-[200px]">
+                        <p class="text-xs text-pathly-light mb-1">Jadwal Sesi</p>
+                        <p class="text-sm font-semibold">${session.schedule}</p>
+                    </div>
+                    <div>
+                        <button class="bg-pathly-card hover:bg-pathly-dark px-4 py-2 text-sm rounded-xl transition border border-pathly-primary">Link Meeting</button>
+                    </div>
+                </div>
+            `).reverse().join(''); // Reverse agar yang terbaru di atas
+        }
+
+        // --- DAFTAR MENTOR FLOW ---
+        function nextStep() {
+            document.getElementById('reg-step-1').classList.add('hidden');
+            document.getElementById('reg-step-2').classList.remove('hidden');
+            document.getElementById('reg-progress-2').classList.replace('bg-pathly-dark', 'bg-pathly-primary');
+        }
+
+        function prevStep() {
+            document.getElementById('reg-step-2').classList.add('hidden');
+            document.getElementById('reg-step-1').classList.remove('hidden');
+            document.getElementById('reg-progress-2').classList.replace('bg-pathly-primary', 'bg-pathly-dark');
+        }
+
+        function submitRegister() {
+            const yearsInput = document.getElementById('reg-years').value;
+            const years = parseInt(yearsInput);
+            
+            if(!years || isNaN(years)) {
+                alert("Mohon isi total lama pengalaman kerja dengan angka yang valid.");
+                return;
+            }
+
+            // Tentukan Level
+            const level = years >= 3 ? "Senior" : "Junior";
+            document.getElementById('assigned-level').innerText = level;
+
+            // Sembunyikan form, tampilkan success
+            document.getElementById('reg-step-2').classList.add('hidden');
+            document.getElementById('reg-success').classList.remove('hidden');
+            document.getElementById('reg-progress-1').parentElement.classList.add('hidden'); // hilangkan progress bar
+        }
+
+        // Inisialisasi awal
+        renderMentors();
+    </script>
+</body>
+</html>

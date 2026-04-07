@@ -6,7 +6,6 @@
     <meta name="description" content="Pathly — Platform digital bimbingan karir untuk mahasiswa dan fresh graduate Indonesia. Konsultasi karir, review CV, dan akses lowongan kerja relevan.">
     <title>Pathly | Find Your Path, Reach Your Future.</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧭</text></svg>">
-    <!-- FIX: Font Inter sekarang di-import dengan benar -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -42,7 +41,6 @@
             border: 1px solid rgba(179, 207, 229, 0.15);
         }
 
-        /* ── Animasi fade-in dari bawah ── */
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(24px); }
             to   { opacity: 1; transform: translateY(0); }
@@ -56,7 +54,6 @@
         .fade-up-3 { animation-delay: 0.3s; }
         .fade-up-4 { animation-delay: 0.4s; }
 
-        /* ── Stats counter ── */
         @keyframes countUp {
             from { opacity: 0; transform: scale(0.8); }
             to   { opacity: 1; transform: scale(1); }
@@ -70,7 +67,6 @@
         .stat-num-3 { animation-delay: 0.45s; }
         .stat-num-4 { animation-delay: 0.6s; }
 
-        /* ── Feature card hover ── */
         .feature-card {
             transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
             cursor: pointer;
@@ -84,7 +80,6 @@
             transform: translateY(-1px);
         }
 
-        /* ── CTA shimmer button ── */
         .cta-shimmer {
             position: relative;
             overflow: hidden;
@@ -145,9 +140,9 @@
         </div>
 
         <div class="hidden md:flex gap-8 text-pathly-light items-center">
-            <a href="#" class="hover:text-pathly-white transition duration-300 border-b-2 border-pathly-primary pb-1">Home</a>
+            <a href="index.html" class="hover:text-pathly-white transition duration-300 border-b-2 border-pathly-primary pb-1">Home</a>
             <a href="loker.html" class="hover:text-pathly-white transition duration-300">Loker</a>
-            <a href="#mentor" class="hover:text-pathly-white transition duration-300">Mentoring & Review CV</a>
+            <a href="mentoring.html" class="hover:text-pathly-white transition duration-300">Mentoring & Review CV</a>
             <a href="#campus" class="hover:text-pathly-white transition duration-300">Campus</a>
         </div>
         </div>
@@ -168,9 +163,9 @@
     <!-- Mobile menu -->
     <div id="mobile-menu" class="md:hidden container mx-auto px-4 mt-2 relative z-40">
         <div class="glass-card rounded-2xl p-5 flex flex-col gap-4 text-center">
-            <a href="#" class="text-pathly-white font-semibold">Home</a>
+            <a href="index.html" class="text-pathly-white font-semibold">Home</a>
             <a href="loker.html" class="text-pathly-light hover:text-pathly-white">Loker</a>
-            <a href="#mentor" class="text-pathly-light hover:text-pathly-white">Mentoring & Review CV</a>
+            <a href="mentoring.html" class="text-pathly-light hover:text-pathly-white">Mentoring & Review CV</a>
             <a href="#campus" class="text-pathly-light hover:text-pathly-white">Campus</a>
             <a href="#about" class="bg-pathly-white text-pathly-dark font-semibold py-2 px-6 rounded-full w-full mt-2 block">
                 Get Started
