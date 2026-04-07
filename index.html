@@ -41,7 +41,6 @@
             border: 1px solid rgba(179, 207, 229, 0.15);
         }
 
-        /* ── CSS Tambahan untuk Fitur Auth ── */
         .glass-input {
             background: rgba(10, 25, 49, 0.5);
             border: 1px solid rgba(179, 207, 229, 0.2);
@@ -115,13 +114,11 @@
             to { left: 160%; }
         }
 
-        /* ── Divider glow ── */
         .divider-glow {
             height: 1px;
             background: linear-gradient(to right, transparent, rgba(74,127,167,0.5), transparent);
         }
 
-        /* ── Progress bar animasi ── */
         .progress-bar {
             width: 0;
             animation: grow 1s ease forwards;
@@ -130,7 +127,6 @@
             to { width: var(--target-width); }
         }
 
-        /* ── Mobile menu smooth ── */
         #mobile-menu {
             max-height: 0;
             overflow: hidden;
@@ -469,7 +465,6 @@
     </div>
 
     <script>
-        // --- 1. STATE AUTH & MEMBERSHIP ---
         let isLoggedIn = false;
         let isPremium = false;
         let user = { name: "Budi Santoso", email: "budi.santoso@gmail.com", initials: "BS" };
@@ -481,25 +476,64 @@
             const profileMobile = document.getElementById('user-profile-mobile');
 
             if(isLoggedIn) {
-                btnDesktop.classList.add('hidden'); 
-                profileDesktop.classList.remove('hidden'); profileDesktop.classList.add('flex');
+                if(btnDesktop) {
+                    btnDesktop.classList.add('hidden');
+                    btnDesktop.classList.remove('md:flex', 'md:block', 'flex', 'block', 'sm:block'); 
+                }
+                if(btnMobile) {
+                    btnMobile.classList.add('hidden');
+                    btnMobile.classList.remove('flex', 'block');
+                }
+
+                if(profileDesktop) { 
+                    profileDesktop.classList.remove('hidden'); 
+                    profileDesktop.classList.add('flex'); 
+                }
+                if(profileMobile) { 
+                    profileMobile.classList.remove('hidden'); 
+                    profileMobile.classList.add('flex'); 
+                }
                 
-                btnMobile.classList.add('hidden'); 
-                profileMobile.classList.remove('hidden'); profileMobile.classList.add('flex');
+                const navName = document.getElementById('nav-name');
+                if (navName) navName.innerText = user.name.split(' ')[0];
                 
-                document.getElementById('nav-name').innerText = user.name.split(' ')[0];
-                document.getElementById('nav-avatar').innerText = user.initials;
-                document.getElementById('nav-avatar-mobile').innerText = user.initials;
-                document.getElementById('profile-avatar-large').innerText = user.initials;
-                document.getElementById('profile-name').innerText = user.name;
-                document.getElementById('profile-email').innerText = user.email;
+                const navAvatar = document.getElementById('nav-avatar');
+                if (navAvatar) navAvatar.innerText = user.initials;
+                
+                const navAvatarMobile = document.getElementById('nav-avatar-mobile');
+                if (navAvatarMobile) navAvatarMobile.innerText = user.initials;
+                
+                const profileAvatarLarge = document.getElementById('profile-avatar-large');
+                if (profileAvatarLarge) profileAvatarLarge.innerText = user.initials;
+                
+                const profileName = document.getElementById('profile-name');
+                if (profileName) profileName.innerText = user.name;
+                
+                const profileEmail = document.getElementById('profile-email');
+                if (profileEmail) profileEmail.innerText = user.email;
+
             } else {
-                btnDesktop.classList.remove('hidden'); 
-                profileDesktop.classList.add('hidden'); profileDesktop.classList.remove('flex');
-                
-                btnMobile.classList.remove('hidden'); 
-                profileMobile.classList.add('hidden'); profileMobile.classList.remove('flex');
+                // Mode Logout: Munculkan Get Started, Sembunyikan Profil
+                if(btnDesktop) {
+                    btnDesktop.classList.remove('hidden');
+                    // Kembalikan 'sm:block' agar tombol terlihat lagi saat logout
+                    btnDesktop.classList.add('sm:block'); 
+                }
+                if(btnMobile) {
+                    btnMobile.classList.remove('hidden');
+                    btnMobile.classList.add('block'); // Kembalikan ke 'block'
+                }
+
+                if(profileDesktop) {
+                    profileDesktop.classList.add('hidden'); 
+                    profileDesktop.classList.remove('flex');
+                }
+                if(profileMobile) {
+                    profileMobile.classList.add('hidden'); 
+                    profileMobile.classList.remove('flex');
+                }
             }
+            
             updateMembershipUI();
         }
 
@@ -519,7 +553,6 @@
             }
         }
 
-        // --- 2. KONTROL MODAL ---
         function openAuthModal() {
             mobileMenu.classList.remove('open');
             const modal = document.getElementById('auth-modal'); const content = document.getElementById('auth-modal-content');
@@ -550,7 +583,6 @@
             content.classList.remove('modal-open'); setTimeout(() => { modal.classList.add('hidden'); }, 300); 
         }
 
-        // --- 3. LOGIKA AUTH ---
         function simulateLogin(e) {
             e.preventDefault(); isLoggedIn = true; closeAuthModal(); updateNavUI();
             showToast("Login Berhasil", `Selamat datang kembali, ${user.name}!`);
@@ -569,7 +601,6 @@
             toast.classList.add('toast-show'); setTimeout(() => { toast.classList.remove('toast-show'); }, 4000); 
         }
 
-        // --- 4. LAIN-LAIN ---
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
         
@@ -583,7 +614,6 @@
             });
         });
 
-        // Initialize UI
         updateNavUI();
     </script>
 </body>
