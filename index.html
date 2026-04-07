@@ -41,6 +41,20 @@
             border: 1px solid rgba(179, 207, 229, 0.15);
         }
 
+        /* ── CSS Tambahan untuk Fitur Auth ── */
+        .glass-input {
+            background: rgba(10, 25, 49, 0.5);
+            border: 1px solid rgba(179, 207, 229, 0.2);
+            color: #F6FAFD;
+        }
+        .glass-input:focus {
+            outline: none;
+            border-color: #4A7FA7;
+            box-shadow: 0 0 10px rgba(74, 127, 167, 0.3);
+        }
+        .modal-open { opacity: 1 !important; transform: scale(1) !important; }
+        .toast-show { transform: translateY(0) !important; opacity: 1 !important; }
+
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(24px); }
             to   { opacity: 1; transform: translateY(0); }
@@ -129,12 +143,8 @@
 </head>
 <body class="min-h-screen antialiased overflow-x-hidden">
 
-    <!-- ══════════════════════════════════════
-         NAVBAR
-    ══════════════════════════════════════ -->
     <nav class="container mx-auto px-5 py-4 md:px-6 flex justify-between items-center glass-card mt-4 rounded-full max-w-6xl sticky top-4 z-50">
         <div class="flex items-center gap-2">
-            <!-- Logo teks saja (ganti dengan <img> jika logo.png tersedia) -->
             <img src="logo.png" alt="Pathly Logo" class="h-10 md:h-14 w-auto object-contain transform scale-125 md:scale-150 origin-left">
             <span class="text-xl md:text-2xl font-bold tracking-wide text-pathly-white ml-2">Pathly</span>
         </div>
@@ -145,13 +155,17 @@
             <a href="mentoring.html" class="hover:text-pathly-white transition duration-300">Mentoring & Review CV</a>
             <a href="campus.html" class="hover:text-pathly-white transition duration-300">Campus</a>
         </div>
-        </div>
 
         <div class="flex items-center gap-4">
-            <!-- FIX: Tombol Get Started sekarang punya aksi (scroll ke #about sebagai contoh) -->
-            <a href="#about" class="hidden sm:block bg-pathly-white text-pathly-dark font-semibold py-2 px-5 md:px-6 rounded-full hover:bg-pathly-light transition duration-300 shadow-[0_0_15px_rgba(246,250,253,0.3)] text-sm md:text-base">
+            <a href="#" id="btn-get-started-desktop" onclick="openAuthModal(); return false;" class="hidden sm:block bg-pathly-white text-pathly-dark font-semibold py-2 px-5 md:px-6 rounded-full hover:bg-pathly-light transition duration-300 shadow-[0_0_15px_rgba(246,250,253,0.3)] text-sm md:text-base">
                 Get Started
             </a>
+
+            <button id="user-profile-desktop" onclick="openProfileModal()" class="hidden items-center gap-2 bg-pathly-card border border-pathly-primary/50 py-1.5 px-2 pr-4 rounded-full hover:bg-pathly-primary/30 transition duration-300">
+                <div class="w-8 h-8 rounded-full bg-pathly-primary flex items-center justify-center text-white font-bold text-sm" id="nav-avatar">BS</div>
+                <span class="text-sm font-semibold text-pathly-white hidden lg:block" id="nav-name">Budi</span>
+            </button>
+
             <button id="mobile-menu-button" class="md:hidden text-pathly-white focus:outline-none p-2">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
@@ -160,25 +174,25 @@
         </div>
     </nav>
 
-    <!-- Mobile menu -->
     <div id="mobile-menu" class="md:hidden container mx-auto px-4 mt-2 relative z-40">
         <div class="glass-card rounded-2xl p-5 flex flex-col gap-4 text-center">
             <a href="index.html" class="text-pathly-white font-semibold">Home</a>
             <a href="loker.html" class="text-pathly-light hover:text-pathly-white">Loker</a>
             <a href="mentoring.html" class="text-pathly-light hover:text-pathly-white">Mentoring & Review CV</a>
             <a href="campus.html" class="text-pathly-light hover:text-pathly-white">Campus</a>
-            <a href="#about" class="bg-pathly-white text-pathly-dark font-semibold py-2 px-6 rounded-full w-full mt-2 block">
+            
+            <a href="#" id="btn-get-started-mobile" onclick="openAuthModal(); return false;" class="bg-pathly-white text-pathly-dark font-semibold py-2 px-6 rounded-full w-full mt-2 block">
                 Get Started
             </a>
+
+            <button id="user-profile-mobile" onclick="openProfileModal()" class="hidden bg-pathly-primary text-pathly-white font-semibold py-2 px-6 rounded-full w-full mt-2 justify-center items-center gap-2">
+                <div class="w-6 h-6 rounded-full bg-white text-pathly-primary flex items-center justify-center text-xs font-bold" id="nav-avatar-mobile">BS</div>Profil Saya
+            </button>
         </div>
     </div>
 
-    <!-- ══════════════════════════════════════
-         HERO SECTION
-    ══════════════════════════════════════ -->
     <section class="container mx-auto px-6 py-12 md:py-20 max-w-6xl flex flex-col-reverse md:flex-row items-center gap-8 md:gap-12 min-h-[80vh]">
         <div class="flex-1 text-center md:text-left">
-            <!-- FIX: Tambah badge/tagline di atas H1 -->
             <div class="inline-flex items-center gap-2 bg-pathly-card bg-opacity-60 border border-pathly-primary border-opacity-40 rounded-full px-4 py-1.5 mb-5 fade-up fade-up-1">
                 <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
                 <span class="text-sm text-pathly-light font-medium">Platform bimbingan karir #1 untuk mahasiswa</span>
@@ -190,47 +204,25 @@
             <p class="text-base sm:text-lg md:text-xl text-pathly-light mb-8 max-w-2xl leading-relaxed mx-auto md:mx-0 fade-up fade-up-3">
                 Platform digital bimbingan karir yang membantu mahasiswa dan fresh graduate menemukan arah karir yang tepat serta mempersiapkan diri untuk memasuki dunia kerja.
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start fade-up fade-up-4">
-                <a href="#services" class="cta-shimmer bg-pathly-primary text-pathly-white font-semibold py-3 px-8 rounded-full hover:bg-opacity-80 transition duration-300 shadow-[0_4px_20px_rgba(74,127,167,0.4)] w-full sm:w-auto text-center">
-                    Explore Services
-                </a>
-                <a href="#about" class="glass-card text-pathly-white font-semibold py-3 px-8 rounded-full hover:bg-pathly-card transition duration-300 w-full sm:w-auto text-center">
-                    Learn More
-                </a>
-            </div>
         </div>
 
         <div class="flex-1 flex justify-center items-center relative w-full mt-8 md:mt-0">
             <div class="absolute w-48 h-48 md:w-72 md:h-72 bg-pathly-primary rounded-full filter blur-[80px] md:blur-[100px] opacity-30"></div>
-            <!--
-                FIX: Ganti placeholder dengan ilustrasi dari undraw.co
-                Rekomendasi: https://undraw.co/search/career  →  download SVG, simpan sebagai hero-illustration.svg
-                Lalu ganti src di bawah ini dengan path file tersebut.
-                Contoh: src="assets/hero-illustration.svg"
-
-                Sementara ini menggunakan inline SVG placeholder yang lebih baik dari via.placeholder.com
-            -->
             <svg class="relative z-10 w-3/4 sm:w-2/3 md:w-full max-w-md" viewBox="0 0 400 350" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- Ilustrasi sederhana: orang dengan peta jalan karir -->
                 <circle cx="200" cy="120" r="80" fill="rgba(74,127,167,0.15)" stroke="rgba(74,127,167,0.3)" stroke-width="1"/>
                 <circle cx="200" cy="120" r="55" fill="rgba(74,127,167,0.2)" stroke="rgba(74,127,167,0.4)" stroke-width="1"/>
-                <!-- Ikon kompas sederhana -->
                 <circle cx="200" cy="120" r="30" fill="rgba(26,61,99,0.8)" stroke="rgba(179,207,229,0.4)" stroke-width="1.5"/>
                 <path d="M200 97 L205 115 L200 113 L195 115 Z" fill="#4A7FA7"/>
                 <path d="M200 143 L195 125 L200 127 L205 125 Z" fill="rgba(179,207,229,0.5)"/>
                 <circle cx="200" cy="120" r="3" fill="#B3CFE5"/>
-                <!-- Path karir -->
                 <path d="M80 260 Q120 220 160 240 Q200 260 240 220 Q280 180 320 200" stroke="rgba(74,127,167,0.6)" stroke-width="2" stroke-dasharray="6 4" fill="none"/>
-                <!-- Milestone dots -->
                 <circle cx="120" cy="238" r="6" fill="#4A7FA7" opacity="0.9"/>
                 <circle cx="200" cy="250" r="6" fill="#4A7FA7" opacity="0.9"/>
                 <circle cx="280" cy="192" r="6" fill="#4A7FA7" opacity="0.9"/>
                 <circle cx="320" cy="200" r="8" fill="#B3CFE5" opacity="1"/>
-                <!-- Label milestone -->
                 <text x="110" y="225" font-family="Inter,sans-serif" font-size="9" fill="rgba(179,207,229,0.7)" text-anchor="middle">Mulai</text>
                 <text x="200" y="268" font-family="Inter,sans-serif" font-size="9" fill="rgba(179,207,229,0.7)" text-anchor="middle">Berkembang</text>
                 <text x="326" y="188" font-family="Inter,sans-serif" font-size="9" fill="rgba(246,250,253,0.9)" text-anchor="middle">Impian</text>
-                <!-- Floating cards kecil -->
                 <rect x="30" y="150" width="80" height="36" rx="8" fill="rgba(26,61,99,0.85)" stroke="rgba(74,127,167,0.4)" stroke-width="1"/>
                 <text x="70" y="165" font-family="Inter,sans-serif" font-size="8" fill="#B3CFE5" text-anchor="middle" font-weight="600">CV Review</text>
                 <text x="70" y="178" font-family="Inter,sans-serif" font-size="7" fill="rgba(179,207,229,0.6)" text-anchor="middle">Siap kerja ✓</text>
@@ -241,9 +233,6 @@
         </div>
     </section>
 
-    <!-- ══════════════════════════════════════
-         STATS SECTION (BARU)
-    ══════════════════════════════════════ -->
     <section class="container mx-auto px-6 max-w-6xl mb-4">
         <div class="divider-glow mb-8"></div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
@@ -267,18 +256,13 @@
         <div class="divider-glow mt-8"></div>
     </section>
 
-    <!-- ══════════════════════════════════════
-         ABOUT SECTION (DIREVISI)
-    ══════════════════════════════════════ -->
     <section id="about" class="container mx-auto px-4 sm:px-6 py-12 md:py-16 max-w-6xl">
         <div class="glass-card rounded-3xl p-6 sm:p-8 md:p-12 relative overflow-hidden">
-            <!-- Blob dekoratif -->
             <div class="absolute -top-20 -right-20 md:-top-24 md:-right-24 w-48 h-48 md:w-64 md:h-64 bg-pathly-primary rounded-full filter blur-[60px] md:blur-[80px] opacity-20 pointer-events-none"></div>
             <div class="absolute -bottom-16 -left-16 w-40 h-40 bg-pathly-card rounded-full filter blur-[60px] opacity-30 pointer-events-none"></div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 relative z-10">
 
-                <!-- Kolom kiri: teks about -->
                 <div class="text-center md:text-left">
                     <span class="inline-block text-xs font-bold tracking-widest text-pathly-primary uppercase mb-2 px-3 py-1 rounded-full border border-pathly-primary border-opacity-30 bg-pathly-primary bg-opacity-10">
                         About Us
@@ -293,7 +277,6 @@
                         Melalui platform kami, Pathly mendukung pengguna untuk meningkatkan kepercayaan diri, mengembangkan skill, dan mempercepat proses mendapatkan pekerjaan impian.
                     </p>
 
-                    <!-- FIX: Tambah trust indicator berupa progress/skill bars -->
                     <div class="space-y-3 mb-6 text-left">
                         <div>
                             <div class="flex justify-between text-xs text-pathly-light mb-1">
@@ -321,19 +304,10 @@
                         </div>
                     </div>
 
-                    <!-- FIX: Tambah link "Pelajari lebih lanjut" -->
-                    <a href="#services" class="inline-flex items-center gap-2 text-pathly-primary font-semibold text-sm hover:gap-3 transition-all duration-200 group">
-                        Pelajari misi kami
-                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                        </svg>
-                    </a>
                 </div>
 
-                <!-- Kolom kanan: feature cards (sekarang bisa diklik) -->
                 <div class="flex flex-col justify-center gap-4">
 
-                    <!-- FIX: Card sekarang pakai <a> agar bisa diklik dan punya cursor pointer -->
                     <a href="#services" class="feature-card bg-pathly-dark bg-opacity-50 border border-pathly-card p-4 md:p-5 rounded-2xl flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 no-underline group">
                         <div class="bg-pathly-card p-3 rounded-xl text-pathly-primary shrink-0 group-hover:bg-pathly-primary group-hover:text-pathly-white transition-colors duration-200">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -384,9 +358,6 @@
                 </div>
             </div>
 
-            <!-- ══════════════════════════════════
-                 FIX: CTA Section di dalam About card
-            ══════════════════════════════════ -->
             <div class="mt-10 pt-8 border-t border-pathly-card border-opacity-60 relative z-10">
                 <div class="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
                     <div>
@@ -394,11 +365,11 @@
                         <p class="text-sm text-pathly-light">Bergabung dengan ribuan mahasiswa yang sudah menemukan arah mereka bersama Pathly.</p>
                     </div>
                     <div class="flex flex-col sm:flex-row gap-3 shrink-0">
-                        <a href="#contact" class="cta-shimmer bg-pathly-primary text-pathly-white font-semibold py-3 px-7 rounded-full hover:bg-opacity-80 transition duration-300 shadow-[0_4px_20px_rgba(74,127,167,0.4)] whitespace-nowrap text-sm text-center">
-                            Mulai Konsultasi Gratis
+                        <a href="mentoring.html" class="cta-shimmer bg-pathly-primary text-pathly-white font-semibold py-3 px-7 rounded-full hover:bg-opacity-80 transition duration-300 shadow-[0_4px_20px_rgba(74,127,167,0.4)] whitespace-nowrap text-sm text-center">
+                            Mulai Konsultasi 
                         </a>
-                        <a href="#services" class="glass-card text-pathly-light font-medium py-3 px-7 rounded-full hover:text-pathly-white hover:bg-pathly-card transition duration-300 whitespace-nowrap text-sm text-center">
-                            Lihat Semua Layanan
+                        <a href="loker.html" class="glass-card text-pathly-light font-medium py-3 px-7 rounded-full hover:text-pathly-white hover:bg-pathly-card transition duration-300 whitespace-nowrap text-sm text-center">
+                            Lihat Loker
                         </a>
                     </div>
                 </div>
@@ -406,34 +377,214 @@
         </div>
     </section>
 
+    <div id="auth-modal" class="hidden fixed inset-0 z-[80] bg-pathly-dark/80 backdrop-blur-sm flex items-center justify-center px-4">
+        <div class="glass-card w-full max-w-md rounded-3xl p-8 relative transform scale-95 opacity-0 transition-all duration-300 shadow-2xl" id="auth-modal-content">
+            <button onclick="closeAuthModal()" class="absolute top-5 right-5 text-pathly-light hover:text-white transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="text-center mb-8">
+                <div class="w-12 h-12 rounded-full bg-pathly-primary flex items-center justify-center text-white font-bold text-xl mx-auto mb-3">P</div>
+                <h3 class="text-2xl font-bold text-pathly-white">Masuk ke Pathly</h3>
+                <p class="text-sm text-pathly-light mt-1">Mulai perjalanan karirmu hari ini.</p>
+            </div>
+            <form onsubmit="simulateLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-pathly-white mb-1.5">Email</label>
+                    <input type="email" required value="budi.santoso@gmail.com" class="glass-input w-full py-3 px-4 rounded-xl text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-pathly-white mb-1.5">Password</label>
+                    <input type="password" required value="123456" class="glass-input w-full py-3 px-4 rounded-xl text-sm">
+                </div>
+                <button type="submit" class="w-full bg-pathly-primary text-pathly-white font-bold py-3.5 rounded-xl hover:bg-opacity-80 transition mt-2">
+                    Masuk Sekarang
+                </button>
+            </form>
+            <p class="text-center text-xs text-pathly-light mt-6">Belum punya akun? <a href="#" class="text-pathly-primary font-bold">Daftar disini</a></p>
+        </div>
+    </div>
 
-    <!-- ══════════════════════════════════════
-         JAVASCRIPT
-    ══════════════════════════════════════ -->
+    <div id="profile-modal" class="hidden fixed inset-0 z-[80] bg-pathly-dark/80 backdrop-blur-sm flex items-center justify-center px-4">
+        <div class="glass-card w-full max-w-sm rounded-3xl p-6 relative transform scale-95 opacity-0 transition-all duration-300 shadow-2xl text-center" id="profile-modal-content">
+            <button onclick="closeProfileModal()" class="absolute top-4 right-4 text-pathly-light hover:text-white transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="w-20 h-20 rounded-full bg-pathly-primary flex items-center justify-center text-white font-bold text-3xl mx-auto mb-4 mt-2 shadow-lg" id="profile-avatar-large">BS</div>
+            <h3 class="text-xl font-bold text-pathly-white" id="profile-name">Budi Santoso</h3>
+            <p class="text-sm text-pathly-light mb-6" id="profile-email">budi.santoso@gmail.com</p>
+
+            <div id="membership-status-card" class="bg-pathly-dark/50 border border-pathly-card rounded-2xl p-4 mb-6 transition-all duration-300">
+                <p class="text-xs text-pathly-light mb-1">Status Akun Kamu:</p>
+                <div id="status-basic" class="block">
+                    <p class="text-lg font-bold text-gray-300 mb-2">Member Basic</p>
+                    <button onclick="openMembershipModal()" class="w-full border border-pathly-primary text-pathly-primary hover:bg-pathly-primary hover:text-white py-2 rounded-xl text-sm font-bold transition">
+                        🚀 Upgrade ke Premium
+                    </button>
+                </div>
+                <div id="status-premium" class="hidden">
+                    <p class="text-lg font-bold text-yellow-400 flex items-center justify-center gap-1">⭐ Premium Member</p>
+                    <p class="text-xs text-pathly-light mt-1">Akses tak terbatas aktif.</p>
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <button class="w-full text-left px-4 py-3 text-sm text-pathly-white hover:bg-pathly-card rounded-xl transition">📄 CV & Portofolio Saya</button>
+                <button class="w-full text-left px-4 py-3 text-sm text-pathly-white hover:bg-pathly-card rounded-xl transition">❤️ Daftar Loker Disimpan</button>
+                <button onclick="simulateLogout()" class="w-full text-left px-4 py-3 text-sm text-red-400 hover:bg-red-500/20 rounded-xl transition">Log Out</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="membership-modal" class="hidden fixed inset-0 z-[90] bg-pathly-dark/90 backdrop-blur-md flex items-center justify-center px-4 py-10 overflow-y-auto">
+        <div class="glass-card w-full max-w-lg rounded-3xl p-8 relative transform scale-95 opacity-0 transition-all duration-300 shadow-[0_0_50px_rgba(74,127,167,0.2)] my-auto" id="membership-modal-content">
+            <button onclick="closeMembershipModal()" class="absolute top-5 right-5 text-pathly-light hover:text-white transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <div class="text-center mb-6">
+                <div class="inline-block bg-yellow-500/20 text-yellow-400 px-3 py-1 rounded-full text-xs font-bold mb-3 border border-yellow-500/30">PATHLY PREMIUM</div>
+                <h3 class="text-3xl font-bold text-pathly-white">Investasi Untuk Karirmu</h3>
+                <p class="text-sm text-pathly-light mt-2">Buka semua fitur rahasia yang membantu 85% pengguna kami mendapatkan kerja lebih cepat.</p>
+            </div>
+            <div class="bg-pathly-dark border border-pathly-primary rounded-2xl p-6 mb-6 text-center">
+                <span class="text-4xl font-extrabold text-white">Rp 49.000</span><span class="text-pathly-light">/bulan</span>
+            </div>
+            <ul class="space-y-3 mb-8 text-sm text-pathly-light pl-2">
+                <li class="flex items-center gap-3"><svg class="w-5 h-5 text-yellow-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Prioritas jadwal Mentoring & Review CV</li>
+                <li class="flex items-center gap-3"><svg class="w-5 h-5 text-yellow-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Insight eksklusif gaji perusahaan</li>
+                <li class="flex items-center gap-3"><svg class="w-5 h-5 text-yellow-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Akses ke kelas persiapan Interview (VOD)</li>
+                <li class="flex items-center gap-3"><svg class="w-5 h-5 text-yellow-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Lencana "Verified Talent" di profilmu</li>
+            </ul>
+            <button onclick="processMembership()" class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-pathly-dark font-bold py-4 rounded-xl hover:opacity-90 transition shadow-[0_4px_20px_rgba(234,179,8,0.3)]">
+                Beli Premium Sekarang
+            </button>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-5 right-5 z-[90] transform translate-y-24 opacity-0 transition-all duration-300 bg-green-500/90 backdrop-blur-md border border-green-400 text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-3">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        <div>
+            <p class="font-bold text-sm" id="toast-title">Berhasil!</p>
+            <p class="text-xs text-white/90" id="toast-msg">Pesan sukses</p>
+        </div>
+    </div>
+
     <script>
-        // Mobile menu toggle
+        // --- 1. STATE AUTH & MEMBERSHIP ---
+        let isLoggedIn = false;
+        let isPremium = false;
+        let user = { name: "Budi Santoso", email: "budi.santoso@gmail.com", initials: "BS" };
+
+        function updateNavUI() {
+            const btnDesktop = document.getElementById('btn-get-started-desktop');
+            const profileDesktop = document.getElementById('user-profile-desktop');
+            const btnMobile = document.getElementById('btn-get-started-mobile');
+            const profileMobile = document.getElementById('user-profile-mobile');
+
+            if(isLoggedIn) {
+                btnDesktop.classList.add('hidden'); 
+                profileDesktop.classList.remove('hidden'); profileDesktop.classList.add('flex');
+                
+                btnMobile.classList.add('hidden'); 
+                profileMobile.classList.remove('hidden'); profileMobile.classList.add('flex');
+                
+                document.getElementById('nav-name').innerText = user.name.split(' ')[0];
+                document.getElementById('nav-avatar').innerText = user.initials;
+                document.getElementById('nav-avatar-mobile').innerText = user.initials;
+                document.getElementById('profile-avatar-large').innerText = user.initials;
+                document.getElementById('profile-name').innerText = user.name;
+                document.getElementById('profile-email').innerText = user.email;
+            } else {
+                btnDesktop.classList.remove('hidden'); 
+                profileDesktop.classList.add('hidden'); profileDesktop.classList.remove('flex');
+                
+                btnMobile.classList.remove('hidden'); 
+                profileMobile.classList.add('hidden'); profileMobile.classList.remove('flex');
+            }
+            updateMembershipUI();
+        }
+
+        function updateMembershipUI() {
+            const statusBasic = document.getElementById('status-basic');
+            const statusPremium = document.getElementById('status-premium');
+            const card = document.getElementById('membership-status-card');
+
+            if(isPremium) {
+                statusBasic.classList.add('hidden'); statusPremium.classList.remove('hidden');
+                card.classList.replace('border-pathly-card', 'border-yellow-500/50');
+                card.classList.replace('bg-pathly-dark/50', 'bg-yellow-500/10');
+            } else {
+                statusBasic.classList.remove('hidden'); statusPremium.classList.add('hidden');
+                card.classList.replace('border-yellow-500/50', 'border-pathly-card');
+                card.classList.replace('bg-yellow-500/10', 'bg-pathly-dark/50');
+            }
+        }
+
+        // --- 2. KONTROL MODAL ---
+        function openAuthModal() {
+            mobileMenu.classList.remove('open');
+            const modal = document.getElementById('auth-modal'); const content = document.getElementById('auth-modal-content');
+            modal.classList.remove('hidden'); setTimeout(() => { content.classList.add('modal-open'); }, 10);
+        }
+        function closeAuthModal() {
+            const modal = document.getElementById('auth-modal'); const content = document.getElementById('auth-modal-content');
+            content.classList.remove('modal-open'); setTimeout(() => { modal.classList.add('hidden'); }, 300); 
+        }
+
+        function openProfileModal() {
+            mobileMenu.classList.remove('open');
+            const modal = document.getElementById('profile-modal'); const content = document.getElementById('profile-modal-content');
+            modal.classList.remove('hidden'); setTimeout(() => { content.classList.add('modal-open'); }, 10);
+        }
+        function closeProfileModal() {
+            const modal = document.getElementById('profile-modal'); const content = document.getElementById('profile-modal-content');
+            content.classList.remove('modal-open'); setTimeout(() => { modal.classList.add('hidden'); }, 300); 
+        }
+
+        function openMembershipModal() {
+            closeProfileModal(); 
+            const modal = document.getElementById('membership-modal'); const content = document.getElementById('membership-modal-content');
+            modal.classList.remove('hidden'); setTimeout(() => { content.classList.add('modal-open'); }, 10);
+        }
+        function closeMembershipModal() {
+            const modal = document.getElementById('membership-modal'); const content = document.getElementById('membership-modal-content');
+            content.classList.remove('modal-open'); setTimeout(() => { modal.classList.add('hidden'); }, 300); 
+        }
+
+        // --- 3. LOGIKA AUTH ---
+        function simulateLogin(e) {
+            e.preventDefault(); isLoggedIn = true; closeAuthModal(); updateNavUI();
+            showToast("Login Berhasil", `Selamat datang kembali, ${user.name}!`);
+        }
+        function simulateLogout() {
+            isLoggedIn = false; isPremium = false; closeProfileModal(); updateNavUI();
+            showToast("Logout Berhasil", "Kamu telah keluar dari sesi.");
+        }
+        function processMembership() {
+            isPremium = true; closeMembershipModal(); updateMembershipUI();
+            showToast("Upgrade Berhasil! ⭐", "Selamat! Akunmu sekarang adalah Premium Member.");
+        }
+        function showToast(title, msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-title').innerText = title; document.getElementById('toast-msg').innerText = msg;
+            toast.classList.add('toast-show'); setTimeout(() => { toast.classList.remove('toast-show'); }, 4000); 
+        }
+
+        // --- 4. LAIN-LAIN ---
         const mobileMenuButton = document.getElementById('mobile-menu-button');
         const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => { mobileMenu.classList.toggle('open'); });
+        mobileMenu.querySelectorAll('a').forEach(link => { link.addEventListener('click', () => mobileMenu.classList.remove('open')); });
 
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('open');
-        });
-
-        // Tutup mobile menu saat klik link di dalamnya
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => mobileMenu.classList.remove('open'));
-        });
-
-        // Smooth scroll untuk semua anchor link
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    e.preventDefault();
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
             });
         });
+
+        // Initialize UI
+        updateNavUI();
     </script>
 </body>
 </html>
